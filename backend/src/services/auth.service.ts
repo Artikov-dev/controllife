@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../repositories/user.repo';
 import { RefreshTokenRepository } from '../repositories/refresh-token.repo';
+import { CategoryRepository } from '../repositories/category.repo';
 import { AppError } from '../middlewares/errorHandler';
 import { env } from '../config/env';
 import { JwtPayload, User } from '../types';
@@ -36,6 +37,20 @@ export class AuthService {
       avatar: data.avatar || null,
       currency: data.currency || 'UZS',
     });
+
+    // Seed default categories for the new user
+    const defaultCategories = [
+      { name: 'Oziq-ovqat', icon: 'ShoppingBag', color: '#f59e0b', type: 'expense' as const, user_id: user.id },
+      { name: 'Transport', icon: 'Car', color: '#3b82f6', type: 'expense' as const, user_id: user.id },
+      { name: 'Kommunal to\'lovlar', icon: 'Home', color: '#ef4444', type: 'expense' as const, user_id: user.id },
+      { name: 'Ko\'ngilochar', icon: 'Gamepad2', color: '#8b5cf6', type: 'expense' as const, user_id: user.id },
+      { name: 'Oylik maosh', icon: 'Briefcase', color: '#10b981', type: 'income' as const, user_id: user.id },
+      { name: 'Qo\'shimcha daromad', icon: 'Gift', color: '#06b6d4', type: 'income' as const, user_id: user.id },
+    ];
+
+    for (const cat of defaultCategories) {
+      await CategoryRepository.create(cat);
+    }
 
     const tokens = this.generateTokens(user.id, user.email, user.role);
 
