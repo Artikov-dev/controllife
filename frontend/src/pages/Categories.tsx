@@ -138,7 +138,7 @@ export default function Categories() {
         </div>
         <button
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/15 transition-all duration-150 w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold shadow-lg shadow-orange-500/15 transition-all duration-150 w-full sm:w-auto"
         >
           <Plus className="h-4.5 w-4.5" />
           Yangi toifa qo'shish
@@ -147,7 +147,7 @@ export default function Categories() {
 
       {categoriesLoading ? (
         <div className="flex flex-col items-center justify-center py-20 space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           <p className="text-xs text-slate-500">Yuklanmoqda...</p>
         </div>
       ) : (
@@ -173,7 +173,7 @@ export default function Categories() {
                     <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                       <button
                         onClick={() => handleOpenEdit(cat)}
-                        className="p-1 rounded-md text-slate-400 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        className="p-1 rounded-md text-slate-400 hover:text-orange-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                         title="Tahrirlash"
                       >
                         <Edit3 className="h-4 w-4" />
@@ -209,7 +209,7 @@ export default function Categories() {
               <span>Hozircha hech qanday toifalar qo'shilmagan</span>
               <button
                 onClick={handleOpenAdd}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 underline"
+                className="text-xs font-bold text-orange-600 hover:text-orange-700 underline"
               >
                 Ilk toifani qo'shish
               </button>
@@ -262,7 +262,7 @@ export default function Categories() {
                   placeholder="Kiyim-kechak, Oziq-ovqat..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 />
               </div>
 
@@ -308,7 +308,7 @@ export default function Categories() {
                 <button
                   type="submit"
                   disabled={saveMutation.isPending}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
                 >
                   {saveMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash

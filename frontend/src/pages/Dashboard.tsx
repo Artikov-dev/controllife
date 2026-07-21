@@ -164,7 +164,7 @@ export default function Dashboard() {
   };
 
   // Pie chart colors
-  const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#64748b'];
+  const COLORS = ['#f97316', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#64748b'];
 
   return (
     <div className="space-y-8">
@@ -184,7 +184,7 @@ export default function Dashboard() {
           </button>
           <button
             onClick={() => setTxModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/15 transition-all duration-150"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold shadow-lg shadow-orange-500/15 transition-all duration-150"
           >
             <Plus className="h-4 w-4" />
             Tranzaksiya qo'shish
@@ -196,7 +196,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1: Balance */}
         <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 stripe-card shadow-sm flex items-center space-x-5">
-          <div className="h-12 w-12 rounded-xl bg-blue-500/10 text-blue-500 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+          <div className="h-12 w-12 rounded-xl bg-orange-500/10 text-orange-500 dark:text-orange-400 flex items-center justify-center flex-shrink-0">
             <Wallet className="h-6 w-6" />
           </div>
           <div>
@@ -257,7 +257,7 @@ export default function Dashboard() {
           <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-300 ${
-                budgetInfo.isExceeded ? 'bg-rose-500 animate-pulse' : 'bg-blue-600'
+                budgetInfo.isExceeded ? 'bg-rose-500 animate-pulse' : 'bg-orange-500'
               }`}
               style={{ width: `${Math.min(budgetInfo.percentageUsed, 100)}%` }}
             />
@@ -271,14 +271,14 @@ export default function Dashboard() {
           )}
         </div>
       ) : (
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-500/5 to-indigo-500/5 border border-blue-500/10 dark:border-indigo-500/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-6 rounded-2xl bg-gradient-to-r from-orange-500/5 to-amber-500/5 border border-orange-500/10 dark:border-amber-500/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h3 className="font-bold text-slate-800 dark:text-slate-200">Ushbu oy uchun xarajat limiti belgilanmagan</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">Byudjet rejalashtirish orqali oylik xarajatlaringizni maqbullashtiring.</p>
           </div>
           <button
             onClick={() => setBudgetModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-md shadow-blue-500/10"
+            className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold transition-colors shadow-md shadow-orange-500/10"
           >
             Byudjet O'rnatish
           </button>
@@ -385,7 +385,7 @@ export default function Dashboard() {
           <h3 className="font-bold text-base">Oxirgi Tranzaksiyalar</h3>
           <Link
             to="/transactions"
-            className="flex items-center text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline gap-0.5"
+            className="flex items-center text-xs font-bold text-orange-600 hover:text-orange-700 dark:text-orange-400 hover:underline gap-0.5"
           >
             Barchasini ko'rish
             <ChevronRight className="h-3.5 w-3.5" />
@@ -478,7 +478,7 @@ export default function Dashboard() {
                   placeholder="Kvartira ijarasi..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                 />
               </div>
 
@@ -493,7 +493,7 @@ export default function Dashboard() {
                     placeholder="500000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                   />
                 </div>
                 
@@ -504,7 +504,7 @@ export default function Dashboard() {
                     required
                     value={txDate}
                     onChange={(e) => setTxDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function Dashboard() {
                   required
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                 >
                   <option value="">Tanlang...</option>
                   {categories
@@ -538,7 +538,7 @@ export default function Dashboard() {
                   rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                 />
               </div>
 
@@ -553,7 +553,7 @@ export default function Dashboard() {
                 <button
                   type="submit"
                   disabled={createTxMutation.isPending}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
                 >
                   {createTxMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash
@@ -584,7 +584,7 @@ export default function Dashboard() {
                   placeholder="3000000"
                   value={budgetAmount}
                   onChange={(e) => setBudgetAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-955 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500"
                 />
               </div>
 
@@ -599,7 +599,7 @@ export default function Dashboard() {
                 <button
                   type="submit"
                   disabled={saveBudgetMutation.isPending}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
                 >
                   {saveBudgetMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash

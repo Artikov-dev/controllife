@@ -60,9 +60,9 @@ export default function DashboardLayout() {
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
       
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex md:w-64 flex-col fixed inset-y-0 left-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-20">
+      <aside className="hidden md:flex md:w-64 flex-col fixed inset-y-0 left-0 bg-white dark:bg-black border-r border-slate-200 dark:border-slate-800 z-20">
         <div className="p-6 flex items-center space-x-3 border-b border-slate-200 dark:border-slate-800">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/25">
             <Wallet className="h-5 w-5 text-white" />
           </div>
           <span className="text-xl font-bold tracking-tight font-display bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
@@ -83,7 +83,7 @@ export default function DashboardLayout() {
                   to={item.path}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-150 group ${
                     isActive
-                      ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/15'
+                      ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/15'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -98,7 +98,7 @@ export default function DashboardLayout() {
         </nav>
 
         {/* User Card / Footer */}
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-black/50">
           <div className="flex items-center space-x-3 p-2 rounded-xl">
             {user.avatar ? (
               <img src={user.avatar} alt={user.full_name} className="h-10 w-10 rounded-full border border-slate-200 dark:border-slate-700 object-cover" />
@@ -128,10 +128,10 @@ export default function DashboardLayout() {
           {/* Backdrop */}
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
           
-          <aside className="relative flex flex-col w-full max-w-xs bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-6 z-50">
+          <aside className="relative flex flex-col w-full max-w-xs bg-white dark:bg-black border-r border-slate-200 dark:border-slate-800 p-6 z-50">
             <div className="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-orange-500 to-amber-600 flex items-center justify-center text-white">
                   <Wallet className="h-4 w-4" />
                 </div>
                 <span className="font-bold text-lg">Finance Tracker</span>
@@ -154,7 +154,7 @@ export default function DashboardLayout() {
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium ${
                         isActive
-                          ? 'bg-blue-500 text-white'
+                          ? 'bg-orange-500 text-white'
                           : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
@@ -190,7 +190,7 @@ export default function DashboardLayout() {
       <div className="flex-1 md:pl-64 flex flex-col min-w-0">
         
         {/* Navbar Header */}
-        <header className="sticky top-0 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 h-16 flex items-center justify-between px-6 z-10 transition-colors">
+        <header className="sticky top-0 bg-white/70 dark:bg-neutral-950/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 h-16 flex items-center justify-between px-6 z-10 transition-colors">
           <div className="flex items-center">
             {/* Burger menu for Mobile */}
             <button

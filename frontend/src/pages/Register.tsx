@@ -92,7 +92,7 @@ export default function Register() {
               className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.full_name
                   ? 'border-red-500 focus:ring-red-500/25'
-                  : 'border-slate-200 dark:border-slate-800 focus:ring-blue-500/25 focus:border-blue-500'
+                  : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
               }`}
             />
           </div>
@@ -118,7 +118,7 @@ export default function Register() {
               className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.email
                   ? 'border-red-500 focus:ring-red-500/25'
-                  : 'border-slate-200 dark:border-slate-800 focus:ring-blue-500/25 focus:border-blue-500'
+                  : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
               }`}
             />
           </div>
@@ -144,7 +144,7 @@ export default function Register() {
               className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.password
                   ? 'border-red-500 focus:ring-red-500/25'
-                  : 'border-slate-200 dark:border-slate-800 focus:ring-blue-500/25 focus:border-blue-500'
+                  : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
               }`}
             />
           </div>
@@ -166,7 +166,7 @@ export default function Register() {
               <select
                 id="currency"
                 {...register('currency')}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 transition-all duration-150"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 transition-all duration-150"
               >
                 <option value="UZS">UZS (so'm)</option>
                 <option value="USD">USD ($)</option>
@@ -193,7 +193,7 @@ export default function Register() {
                 className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                   errors.avatar
                     ? 'border-red-500 focus:ring-red-500/25'
-                    : 'border-slate-200 dark:border-slate-800 focus:ring-blue-500/25 focus:border-blue-500'
+                    : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
                 }`}
               />
             </div>
@@ -207,7 +207,7 @@ export default function Register() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
@@ -225,7 +225,7 @@ export default function Register() {
           Hisobingiz bormi?{' '}
           <Link
             to="/auth/login"
-            className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
           >
             Kirish
           </Link>

@@ -112,7 +112,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Stat 1: Users */}
           <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm flex items-center space-x-4.5">
-            <div className="h-11 w-11 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center flex-shrink-0">
+            <div className="h-11 w-11 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center flex-shrink-0">
               <Users className="h-5.5 w-5.5" />
             </div>
             <div>
@@ -178,14 +178,14 @@ export default function AdminDashboard() {
                 placeholder="Ism yoki email bo'yicha..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
               />
             </div>
             {/* Block status */}
             <select
               value={isBlocked}
               onChange={(e) => { setIsBlocked(e.target.value); setPage(1); }}
-              className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+              className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
             >
               <option value="">Barcha holatlar</option>
               <option value="false">Faol a'zolar</option>
@@ -196,7 +196,7 @@ export default function AdminDashboard() {
 
         {usersLoading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
             <p className="text-xs text-slate-500">Yuklanmoqda...</p>
           </div>
         ) : (
@@ -229,7 +229,7 @@ export default function AdminDashboard() {
                             <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                               {usr.full_name}
                               {usr.id === currentUser?.id && (
-                                <span className="text-[10px] bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold px-1.5 py-0.2 rounded">
+                                <span className="text-[10px] bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 font-bold px-1.5 py-0.2 rounded">
                                   Men
                                 </span>
                               )}

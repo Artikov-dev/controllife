@@ -130,7 +130,7 @@ export default function Recurring() {
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/15 transition-all duration-150 w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold shadow-lg shadow-orange-500/15 transition-all duration-150 w-full sm:w-auto"
         >
           <Plus className="h-4.5 w-4.5" />
           Avto-to'lov rejalashtirish
@@ -138,7 +138,7 @@ export default function Recurring() {
       </div>
 
       {/* Info Alert */}
-      <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 text-blue-800 dark:text-blue-400 flex items-start gap-3">
+      <div className="p-4 rounded-xl bg-orange-500/5 border border-orange-500/10 text-orange-850 dark:text-orange-400 flex items-start gap-3">
         <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
         <div className="text-xs space-y-1">
           <p className="font-bold">Avtomatik tranzaksiyalar qanday ishlaydi?</p>
@@ -151,7 +151,7 @@ export default function Recurring() {
       {/* Grid List */}
       {billsLoading ? (
         <div className="flex flex-col items-center justify-center py-20 space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           <p className="text-xs text-slate-500">Yuklanmoqda...</p>
         </div>
       ) : (
@@ -213,7 +213,7 @@ export default function Recurring() {
               <span>Hozircha hech qanday davriy to'lovlar rejalashtirilmagan</span>
               <button
                 onClick={() => setModalOpen(true)}
-                className="text-xs font-bold text-blue-600 hover:text-blue-700 underline"
+                className="text-xs font-bold text-orange-600 hover:text-orange-700 underline"
               >
                 Ilk avto-to'lovni qo'shish
               </button>
@@ -242,7 +242,7 @@ export default function Recurring() {
                   placeholder="Kvartira ijarasi, Spotify obunasi..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 />
               </div>
 
@@ -257,7 +257,7 @@ export default function Recurring() {
                   placeholder="15000"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 />
               </div>
 
@@ -268,7 +268,7 @@ export default function Recurring() {
                   <select
                     value={frequency}
                     onChange={(e: any) => setFrequency(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                   >
                     <option value="daily">Kunlik</option>
                     <option value="weekly">Haftalik</option>
@@ -285,7 +285,7 @@ export default function Recurring() {
                     required
                     value={nextRun}
                     onChange={(e) => setNextRun(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                   />
                 </div>
               </div>
@@ -297,7 +297,7 @@ export default function Recurring() {
                   required
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 >
                   <option value="">Tanlang...</option>
                   {categories
@@ -317,14 +317,14 @@ export default function Recurring() {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="flex-1 py-2.5 border border-slate-200 dark:border-slate-800 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950 transition-colors"
+                  className="flex-1 py-2.5 border border-slate-200 dark:border-slate-800 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-955 transition-colors"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
                 >
                   {createMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash

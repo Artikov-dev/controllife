@@ -199,7 +199,7 @@ export default function Transactions() {
         </div>
         <button
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/15 transition-all duration-150 w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold shadow-lg shadow-orange-500/15 transition-all duration-150 w-full sm:w-auto"
         >
           <Plus className="h-4.5 w-4.5" />
           Yangi tranzaksiya
@@ -222,7 +222,7 @@ export default function Transactions() {
               placeholder="Qidiruv..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
             />
           </div>
 
@@ -230,7 +230,7 @@ export default function Transactions() {
           <select
             value={type}
             onChange={(e) => { setType(e.target.value); setCategoryId(''); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
           >
             <option value="">Barcha turlar</option>
             <option value="income">Kirim</option>
@@ -241,7 +241,7 @@ export default function Transactions() {
           <select
             value={categoryId}
             onChange={(e) => { setCategoryId(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
           >
             <option value="">Barcha toifalar</option>
             {categories
@@ -257,7 +257,7 @@ export default function Transactions() {
           <select
             value={month}
             onChange={(e) => { setMonth(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
           >
             <option value="">Barcha oylar</option>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
@@ -271,7 +271,7 @@ export default function Transactions() {
           <select
             value={year}
             onChange={(e) => { setYear(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
           >
             <option value="">Barcha yillar</option>
             {[2024, 2025, 2026, 2027].map((y) => (
@@ -285,7 +285,7 @@ export default function Transactions() {
           <select
             value={sort}
             onChange={(e) => { setSort(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
           >
             <option value="date_desc">Sana (Yangi-Eski)</option>
             <option value="date_asc">Sana (Eski-Yangi)</option>
@@ -301,7 +301,7 @@ export default function Transactions() {
       <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm space-y-4">
         {txLoading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
             <p className="text-xs text-slate-500">Yuklanmoqda...</p>
           </div>
         ) : (
@@ -358,7 +358,7 @@ export default function Transactions() {
                           <div className="flex justify-end gap-1.5">
                             <button
                               onClick={() => handleOpenEdit(tx)}
-                              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-blue-600 hover:bg-blue-50/50 dark:hover:bg-slate-800 transition-colors"
+                              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-orange-600 hover:bg-orange-50/50 dark:hover:bg-slate-800 transition-colors"
                               title="Tahrirlash"
                             >
                               <Edit3 className="h-4 w-4" />
@@ -455,7 +455,7 @@ export default function Transactions() {
                   placeholder="Kvartira ijarasi..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 />
               </div>
 
@@ -470,7 +470,7 @@ export default function Transactions() {
                     placeholder="500000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                   />
                 </div>
                 
@@ -481,7 +481,7 @@ export default function Transactions() {
                     required
                     value={txDate}
                     onChange={(e) => setTxDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                   />
                 </div>
               </div>
@@ -492,7 +492,7 @@ export default function Transactions() {
                   required
                   value={formCategoryId}
                   onChange={(e) => setFormCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 >
                   <option value="">Tanlang...</option>
                   {categories
@@ -515,7 +515,7 @@ export default function Transactions() {
                   rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/25"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 />
               </div>
 
@@ -530,7 +530,7 @@ export default function Transactions() {
                 <button
                   type="submit"
                   disabled={createMutation.isPending || updateMutation.isPending}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
                 >
                   {(createMutation.isPending || updateMutation.isPending) && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash
