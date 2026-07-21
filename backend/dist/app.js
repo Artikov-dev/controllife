@@ -12,6 +12,7 @@ const category_routes_1 = __importDefault(require("./routes/category.routes"));
 const transaction_routes_1 = __importDefault(require("./routes/transaction.routes"));
 const budget_routes_1 = __importDefault(require("./routes/budget.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
+const recurring_routes_1 = __importDefault(require("./routes/recurring.routes"));
 const errorHandler_1 = require("./middlewares/errorHandler");
 const app = (0, express_1.default)();
 // Security middlewares
@@ -43,6 +44,7 @@ app.use('/api/categories', category_routes_1.default);
 app.use('/api/transactions', transaction_routes_1.default);
 app.use('/api/budgets', budget_routes_1.default);
 app.use('/api/admin', admin_routes_1.default);
+app.use('/api/recurring', recurring_routes_1.default);
 // Error Handling
 app.use(errorHandler_1.errorHandler);
 exports.default = app;

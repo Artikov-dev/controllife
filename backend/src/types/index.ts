@@ -51,6 +51,17 @@ export interface RefreshToken {
   created_at: Date;
 }
 
+export interface RecurringTransaction {
+  id: number;
+  title: string;
+  amount: number | string;
+  frequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  next_run: string;
+  category_id: number;
+  user_id: number;
+  created_at: Date;
+}
+
 export interface JwtPayload {
   userId: number;
   email: string;

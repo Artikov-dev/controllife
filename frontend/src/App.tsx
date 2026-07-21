@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Categories from './pages/Categories';
 import AdminDashboard from './pages/AdminDashboard';
+import Recurring from './pages/Recurring';
 import { Toaster } from 'sonner';
 
 // Protected Route Component
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="categories" element={<Categories />} />
+          <Route path="recurring" element={<Recurring />} />
           <Route
             path="admin"
             element={

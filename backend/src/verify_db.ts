@@ -17,27 +17,21 @@ const pool = new Pool({
 async function runTest() {
   try {
     const client = await pool.connect();
-    console.log('Connected to Render database. Querying table schemas...\n');
+    console.log('Querying columns for recurring_transactions...\n');
     
-    const tables = ['users', 'categories', 'transactions', 'budgets', 'refresh_tokens'];
+    const res = await client.query(`
+      SELECT column_name, data_type, is_nullable
+      FROM information_schema.columns
+      WHERE table_name = 'recurring_transactions'
+      ORDER BY ordinal_position
+    `);
     
-    for (const table of tables) {
-      console.log(`=== Table: ${table} ===`);
-      const res = await client.query(`
-        SELECT column_name, data_type, character_maximum_length, is_nullable
-        FROM information_schema.columns
-        WHERE table_name = $1
-        ORDER BY ordinal_position
-      `, [table]);
-      
-      if (res.rowCount === 0) {
-        console.log('Table does not exist!\n');
-      } else {
-        res.rows.forEach((row: any) => {
-          console.log(` - ${row.column_name}: ${row.data_type} (Nullable: ${row.is_nullable})`);
-        });
-        console.log();
-      }
+    if (res.rowCount === 0) {
+      console.log('Table does not exist!');
+    } else {
+      res.rows.forEach((row: any) => {
+        console.log(` - ${row.column_name}: ${row.data_type} (Nullable: ${row.is_nullable})`);
+      });
     }
 
     client.release();

@@ -2,10 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransactionController = void 0;
 const transaction_service_1 = require("../services/transaction.service");
+const recurring_service_1 = require("../services/recurring.service");
 class TransactionController {
     static async getTransactions(req, res, next) {
         try {
             const userId = req.user.userId;
+            // Transparently process any due recurring bills before listing
+            await recurring_service_1.RecurringTransactionService.processDueRecurring(userId);
             const { page, limit, type, category_id, search, month, year, sort } = req.query;
             const filters = {
                 page: page ? parseInt(page, 10) : 1,
@@ -73,6 +76,8 @@ class TransactionController {
     static async getDashboardData(req, res, next) {
         try {
             const userId = req.user.userId;
+            // Transparently process any due recurring bills before dashboard rendering
+            await recurring_service_1.RecurringTransactionService.processDueRecurring(userId);
             const data = await transaction_service_1.TransactionService.getDashboardData(userId);
             res.status(200).json({
                 status: 'success',

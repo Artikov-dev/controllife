@@ -8,6 +8,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_repo_1 = require("../repositories/user.repo");
 const refresh_token_repo_1 = require("../repositories/refresh-token.repo");
+const category_repo_1 = require("../repositories/category.repo");
 const errorHandler_1 = require("../middlewares/errorHandler");
 const env_1 = require("../config/env");
 class AuthService {
@@ -36,6 +37,18 @@ class AuthService {
             avatar: data.avatar || null,
             currency: data.currency || 'UZS',
         });
+        // Seed default categories for the new user
+        const defaultCategories = [
+            { name: 'Oziq-ovqat', icon: 'ShoppingBag', color: '#f59e0b', type: 'expense', user_id: user.id },
+            { name: 'Transport', icon: 'Car', color: '#3b82f6', type: 'expense', user_id: user.id },
+            { name: 'Kommunal to\'lovlar', icon: 'Home', color: '#ef4444', type: 'expense', user_id: user.id },
+            { name: 'Ko\'ngilochar', icon: 'Gamepad2', color: '#8b5cf6', type: 'expense', user_id: user.id },
+            { name: 'Oylik maosh', icon: 'Briefcase', color: '#10b981', type: 'income', user_id: user.id },
+            { name: 'Qo\'shimcha daromad', icon: 'Gift', color: '#06b6d4', type: 'income', user_id: user.id },
+        ];
+        for (const cat of defaultCategories) {
+            await category_repo_1.CategoryRepository.create(cat);
+        }
         const tokens = this.generateTokens(user.id, user.email, user.role);
         // Save refresh token to db
         const expiresAt = new Date();

@@ -12,7 +12,8 @@ import {
   Menu, 
   X, 
   Wallet,
-  ChevronRight
+  ChevronRight,
+  Clock
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -49,6 +50,7 @@ export default function DashboardLayout() {
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, role: 'user' },
     { name: 'Tranzaksiyalar', path: '/transactions', icon: ArrowLeftRight, role: 'user' },
     { name: 'Kategoriyalar', path: '/categories', icon: FolderKanban, role: 'user' },
+    { name: 'Davriy to\'lovlar', path: '/recurring', icon: Clock, role: 'user' },
     { name: 'Admin Panel', path: '/admin', icon: ShieldAlert, role: 'admin' },
   ];
 

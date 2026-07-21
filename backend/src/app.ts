@@ -7,6 +7,7 @@ import categoryRoutes from './routes/category.routes';
 import transactionRoutes from './routes/transaction.routes';
 import budgetRoutes from './routes/budget.routes';
 import adminRoutes from './routes/admin.routes';
+import recurringRoutes from './routes/recurring.routes';
 import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
@@ -47,6 +48,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/recurring', recurringRoutes);
 
 // Error Handling
 app.use(errorHandler);

@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import { TransactionService } from '../services/transaction.service';
+import { RecurringTransactionService } from '../services/recurring.service';
 
 export class TransactionController {
   static async getTransactions(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userId = req.user!.userId;
+      
+      // Transparently process any due recurring bills before listing
+      await RecurringTransactionService.processDueRecurring(userId);
+
       const { page, limit, type, category_id, search, month, year, sort } = req.query;
 
       const filters = {
@@ -74,6 +79,10 @@ export class TransactionController {
   static async getDashboardData(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userId = req.user!.userId;
+      
+      // Transparently process any due recurring bills before dashboard rendering
+      await RecurringTransactionService.processDueRecurring(userId);
+
       const data = await TransactionService.getDashboardData(userId);
       res.status(200).json({
         status: 'success',
