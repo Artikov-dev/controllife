@@ -2,12 +2,9 @@ import pg from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load environment variables from backend/
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const { Pool } = pg;
-
-console.log('Database URL parsed:', process.env.DATABASE_URL ? 'YES' : 'NO');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -19,33 +16,34 @@ const pool = new Pool({
 
 async function runTest() {
   try {
-    console.log('Testing connection to Render PostgreSQL database...');
-    const start = Date.now();
     const client = await pool.connect();
-    console.log(`Connected successfully in ${Date.now() - start}ms!`);
+    console.log('Connected to Render database. Querying table schemas...\n');
     
-    console.log('Querying table information...');
-    const tables = await client.query(`
-      SELECT table_name 
-      FROM information_schema.tables 
-      WHERE table_schema = 'public'
-    `);
+    const tables = ['users', 'categories', 'transactions', 'budgets', 'refresh_tokens'];
     
-    console.log('Found tables:');
-    tables.rows.forEach((row: any) => {
-      console.log(` - ${row.table_name}`);
-    });
-
-    // Check user count
-    const usersCount = await client.query('SELECT COUNT(*) FROM users');
-    console.log(`\nTotal users in database: ${usersCount.rows[0].count}`);
+    for (const table of tables) {
+      console.log(`=== Table: ${table} ===`);
+      const res = await client.query(`
+        SELECT column_name, data_type, character_maximum_length, is_nullable
+        FROM information_schema.columns
+        WHERE table_name = $1
+        ORDER BY ordinal_position
+      `, [table]);
+      
+      if (res.rowCount === 0) {
+        console.log('Table does not exist!\n');
+      } else {
+        res.rows.forEach((row: any) => {
+          console.log(` - ${row.column_name}: ${row.data_type} (Nullable: ${row.is_nullable})`);
+        });
+        console.log();
+      }
+    }
 
     client.release();
     await pool.end();
-    console.log('\nVerification completed successfully!');
   } catch (error) {
-    console.error('Database verification failed:', error);
-    process.exit(1);
+    console.error('Schema check failed:', error);
   }
 }
 
