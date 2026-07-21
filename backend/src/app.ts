@@ -1,0 +1,54 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import authRoutes from './routes/auth.routes';
+import categoryRoutes from './routes/category.routes';
+import transactionRoutes from './routes/transaction.routes';
+import budgetRoutes from './routes/budget.routes';
+import adminRoutes from './routes/admin.routes';
+import { errorHandler } from './middlewares/errorHandler';
+
+const app = express();
+
+// Security middlewares
+app.use(helmet());
+app.use(
+  cors({
+    origin: '*', // Allows access from any frontend origin for ease of local development
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+
+// General rate limiter to prevent DOS
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Limit each IP to 200 requests per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    status: 'error',
+    message: 'Too many requests from this IP, please try again after 15 minutes',
+  },
+});
+
+app.use('/api', apiLimiter);
+
+// Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date() });
+});
+
+// App Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/budgets', budgetRoutes);
+app.use('/api/admin', adminRoutes);
+
+// Error Handling
+app.use(errorHandler);
+
+export default app;
