@@ -14,14 +14,19 @@ const budget_routes_1 = __importDefault(require("./routes/budget.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
 const recurring_routes_1 = __importDefault(require("./routes/recurring.routes"));
 const errorHandler_1 = require("./middlewares/errorHandler");
+const swagger_1 = require("./config/swagger");
 const app = (0, express_1.default)();
-// Security middlewares
-app.use((0, helmet_1.default)());
+// Security middlewares (contentSecurityPolicy disabled for Swagger UI rendering)
+app.use((0, helmet_1.default)({
+    contentSecurityPolicy: false,
+}));
 app.use((0, cors_1.default)({
     origin: '*', // Allows access from any frontend origin for ease of local development
     credentials: true,
 }));
 app.use(express_1.default.json());
+// Swagger API Documentation UI
+app.use('/api-docs', swagger_1.swaggerUi.serve, swagger_1.swaggerUi.setup(swagger_1.swaggerSpec));
 // General rate limiter to prevent DOS
 const apiLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000, // 15 minutes

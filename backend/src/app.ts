@@ -9,11 +9,16 @@ import budgetRoutes from './routes/budget.routes';
 import adminRoutes from './routes/admin.routes';
 import recurringRoutes from './routes/recurring.routes';
 import { errorHandler } from './middlewares/errorHandler';
+import { swaggerUi, swaggerSpec } from './config/swagger';
 
 const app = express();
 
-// Security middlewares
-app.use(helmet());
+// Security middlewares (contentSecurityPolicy disabled for Swagger UI rendering)
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(
   cors({
     origin: '*', // Allows access from any frontend origin for ease of local development
@@ -22,6 +27,9 @@ app.use(
 );
 
 app.use(express.json());
+
+// Swagger API Documentation UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // General rate limiter to prevent DOS
 const apiLimiter = rateLimit({
@@ -54,3 +62,4 @@ app.use('/api/recurring', recurringRoutes);
 app.use(errorHandler);
 
 export default app;
+
