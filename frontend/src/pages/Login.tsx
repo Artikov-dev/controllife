@@ -52,20 +52,20 @@ export default function Login() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-[#16161E] p-8 rounded-2xl border border-amber-500/20 shadow-2xl">
       <div className="space-y-2">
-        <h2 className="text-3xl font-extrabold tracking-tight font-display text-slate-900 dark:text-white">
-          Tizimga kirish
+        <h2 className="text-3xl font-black tracking-tight font-display text-white">
+          Tizimga kirish 🟡
         </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-slate-400">
           Hisobingizga kirish uchun quyidagi ma'lumotlarni to'ldiring
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Email Field */}
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider" htmlFor="email">
+          <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="email">
             Email Manzili
           </label>
           <div className="relative">
@@ -77,22 +77,22 @@ export default function Login() {
               type="email"
               placeholder="example@finance.com"
               {...register('email')}
-              className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+              className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.email
-                  ? 'border-red-500 focus:ring-red-500/25'
-                  : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
+                  ? 'border-rose-500 focus:ring-rose-500/25'
+                  : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
               }`}
             />
           </div>
           {errors.email && (
-            <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+            <p className="text-xs text-rose-400 mt-1">{errors.email.message}</p>
           )}
         </div>
 
         {/* Password Field */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-center">
-            <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider" htmlFor="password">
+            <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="password">
               Parol
             </label>
           </div>
@@ -105,15 +105,15 @@ export default function Login() {
               type="password"
               placeholder="••••••••"
               {...register('password')}
-              className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+              className={`w-full pl-11 pr-4 py-3 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.password
-                  ? 'border-red-500 focus:ring-red-500/25'
-                  : 'border-slate-200 dark:border-slate-800 focus:ring-orange-500/25 focus:border-orange-500'
+                  ? 'border-rose-500 focus:ring-rose-500/25'
+                  : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
               }`}
             />
           </div>
           {errors.password && (
-            <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+            <p className="text-xs text-rose-400 mt-1">{errors.password.message}</p>
           )}
         </div>
 
@@ -121,7 +121,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-black text-[#0B0B0E] gold-gradient hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F59E0B] transition-all duration-200 shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
@@ -135,11 +135,11 @@ export default function Login() {
       </form>
 
       <div className="text-center pt-2">
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-slate-400">
           Hisobingiz yo'qmi?{' '}
           <Link
             to="/auth/register"
-            className="font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+            className="font-bold text-[#FCD34D] hover:text-[#F59E0B] underline"
           >
             Ro'yxatdan o'tish
           </Link>

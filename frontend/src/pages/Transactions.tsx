@@ -2,17 +2,16 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/useAuthStore';
 import apiClient from '../api/client';
-import { 
-  Plus, 
-  Search, 
-  Trash2, 
-  Edit3, 
-  ChevronLeft, 
-  ChevronRight, 
-  Filter, 
-  Loader2,
-  ArrowRightLeft
-} from 'lucide-react';
+import {
+  AddCircle as AddCircleIcon,
+  Search as SearchIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  FilterList as FilterListIcon,
+  ReceiptLong as ReceiptLongIcon,
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 
 export default function Transactions() {
@@ -39,29 +38,26 @@ export default function Transactions() {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [txType, setTxType] = useState<'income' | 'expense'>('expense');
-  const [formCategoryId, setFormCategoryId] = useState('');
+  const [txCategoryId, setTxCategoryId] = useState('');
   const [txDate, setTxDate] = useState(new Date().toISOString().split('T')[0]);
 
-  // Fetch transactions with current query parameters
+  // Fetch transactions list
   const { data: txResponse, isLoading: txLoading } = useQuery({
-    queryKey: ['transactions', page, type, categoryId, search, month, year, sort],
+    queryKey: ['transactions', page, search, type, categoryId, month, year, sort],
     queryFn: async () => {
-      const params = new URLSearchParams();
-      params.append('page', page.toString());
-      params.append('limit', limit.toString());
-      if (type) params.append('type', type);
-      if (categoryId) params.append('category_id', categoryId);
-      if (search) params.append('search', search);
-      if (month) params.append('month', month);
-      if (year) params.append('year', year);
-      if (sort) params.append('sort', sort);
+      const params: any = { page, limit, sort };
+      if (search) params.search = search;
+      if (type) params.type = type;
+      if (categoryId) params.category_id = categoryId;
+      if (month) params.month = month;
+      if (year) params.year = year;
 
-      const res = await apiClient.get(`/api/transactions?${params.toString()}`);
+      const res = await apiClient.get('/api/transactions', { params });
       return res.data.data;
     },
   });
 
-  // Fetch categories for filter dropdowns and forms
+  // Fetch categories for filter and dropdowns
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
@@ -70,8 +66,8 @@ export default function Transactions() {
     },
   });
 
-  // Create transaction mutation
-  const createMutation = useMutation({
+  // Create Transaction Mutation
+  const createTxMutation = useMutation({
     mutationFn: async (payload: any) => {
       const res = await apiClient.post('/api/transactions', payload);
       return res.data;
@@ -84,16 +80,16 @@ export default function Transactions() {
       if (data.data.budgetWarning) {
         toast.warning(data.data.budgetWarning.message, { duration: 6000 });
       } else {
-        toast.success('Tranzaksiya muvaffaqiyatli saqlandi!');
+        toast.success('Tranzaksiya qo\'shildi!');
       }
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'Saqlashda xatolik yuz berdi');
+      toast.error(err.response?.data?.message || 'Xatolik yuz berdi');
     },
   });
 
-  // Update transaction mutation
-  const updateMutation = useMutation({
+  // Update Transaction Mutation
+  const updateTxMutation = useMutation({
     mutationFn: async ({ id, payload }: { id: number; payload: any }) => {
       const res = await apiClient.put(`/api/transactions/${id}`, payload);
       return res.data;
@@ -102,27 +98,27 @@ export default function Transactions() {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       setEditOpen(false);
-      setEditingTx(null);
       resetForm();
-      toast.success('Tranzaksiya muvaffaqiyatli yangilandi!');
+      toast.success('Tranzaksiya yangilandi!');
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'Yangilashda xatolik yuz berdi');
+      toast.error(err.response?.data?.message || 'Xatolik yuz berdi');
     },
   });
 
-  // Delete transaction mutation
-  const deleteMutation = useMutation({
+  // Delete Transaction Mutation
+  const deleteTxMutation = useMutation({
     mutationFn: async (id: number) => {
-      await apiClient.delete(`/api/transactions/${id}`);
+      const res = await apiClient.delete(`/api/transactions/${id}`);
+      return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      toast.success('Tranzaksiya muvaffaqiyatli o\'chirildi');
+      toast.success('Tranzaksiya o\'chirildi');
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'O\'chirishda xatolik yuz berdi');
+      toast.error(err.response?.data?.message || 'O\'chirishda xatolik');
     },
   });
 
@@ -131,8 +127,9 @@ export default function Transactions() {
     setAmount('');
     setDescription('');
     setTxType('expense');
-    setFormCategoryId('');
+    setTxCategoryId('');
     setTxDate(new Date().toISOString().split('T')[0]);
+    setEditingTx(null);
   };
 
   const handleOpenAdd = () => {
@@ -143,86 +140,95 @@ export default function Transactions() {
   const handleOpenEdit = (tx: any) => {
     setEditingTx(tx);
     setTitle(tx.title);
-    setAmount(tx.amount);
+    setAmount(tx.amount.toString());
     setDescription(tx.description || '');
     setTxType(tx.type);
-    setFormCategoryId(tx.category_id.toString());
-    setTxDate(tx.transaction_date.substring(0, 10)); // extract YYYY-MM-DD
+    setTxCategoryId(tx.category_id.toString());
+    setTxDate(tx.transaction_date.split('T')[0]);
     setEditOpen(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleCreateSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !amount || !formCategoryId || !txDate) {
-      toast.error('Barcha majburiy maydonlarni to\'ldiring');
+    if (!title || !amount || !txCategoryId || !txDate) {
+      toast.error('Barcha maydonlarni to\'ldiring');
       return;
     }
-    const payload = {
+    createTxMutation.mutate({
       title,
       amount: parseFloat(amount),
       description: description || null,
       transaction_date: txDate,
       type: txType,
-      category_id: parseInt(formCategoryId, 10),
-    };
+      category_id: parseInt(txCategoryId, 10),
+    });
+  };
 
-    if (editOpen && editingTx) {
-      updateMutation.mutate({ id: editingTx.id, payload });
-    } else {
-      createMutation.mutate(payload);
-    }
+  const handleUpdateSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTx) return;
+    updateTxMutation.mutate({
+      id: editingTx.id,
+      payload: {
+        title,
+        amount: parseFloat(amount),
+        description: description || null,
+        transaction_date: txDate,
+        type: txType,
+        category_id: parseInt(txCategoryId, 10),
+      },
+    });
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm('Haqiqatdan ham ushbu tranzaksiyani o\'chirmoqchimisiz?')) {
-      deleteMutation.mutate(id);
+    if (confirm('Rostdan ham ushbu tranzaksiyani o\'chirmoqchimisiz?')) {
+      deleteTxMutation.mutate(id);
     }
   };
 
   const currencySymbol = user?.currency || 'UZS';
+
   const formatCurrency = (val: number | string) => {
     const num = typeof val === 'string' ? parseFloat(val) : val;
-    return new Intl.NumberFormat('uz-UZ').format(num) + ' ' + currencySymbol;
+    return new Intl.NumberFormat('uz-UZ', { style: 'decimal' }).format(num) + ' ' + currencySymbol;
   };
 
-  const activePage = txResponse?.pagination?.page || 1;
-  const totalPages = txResponse?.pagination?.totalPages || 1;
   const transactionsList = txResponse?.transactions || [];
 
   return (
     <div className="space-y-6">
       {/* Upper header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/40 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 backdrop-blur-sm">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight font-display">Tranzaksiyalar Boshqaruvi</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Barcha kirim va chiqim operatsiyalaringiz ro'yxati va filtri.</p>
+          <h1 className="text-2xl font-black tracking-tight font-display text-white">Tranzaksiyalar Boshqaruvi 🟡</h1>
+          <p className="text-sm text-slate-400">Barcha kirim va chiqim operatsiyalaringiz ro'yxati va filtri.</p>
         </div>
         <button
           onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold shadow-lg shadow-orange-500/15 transition-all duration-150 w-full sm:w-auto"
+          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold shadow-lg shadow-amber-500/20 transition-all duration-150 w-full sm:w-auto"
         >
-          <Plus className="h-4.5 w-4.5" />
+          <AddCircleIcon style={{ fontSize: 20 }} />
           Yangi tranzaksiya
         </button>
       </div>
 
       {/* Filter panel */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm space-y-4">
-        <div className="flex items-center space-x-2 text-slate-400 border-b border-slate-100 dark:border-slate-855 pb-3">
-          <Filter className="h-4.5 w-4.5" />
-          <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">Saralash va Filtrlash</h3>
+      <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-4">
+        <div className="flex items-center space-x-2 text-[#FBBF24] border-b border-amber-500/20 pb-3">
+          <FilterListIcon style={{ fontSize: 20 }} />
+          <h3 className="text-sm font-bold text-white">Saralash va Filtrlash</h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            <SearchIcon style={{ fontSize: 18 }} className="absolute left-3 top-3 text-slate-400" />
             <input
               type="text"
               placeholder="Qidiruv..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
             />
           </div>
 
@@ -230,310 +236,357 @@ export default function Transactions() {
           <select
             value={type}
             onChange={(e) => { setType(e.target.value); setCategoryId(''); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
           >
             <option value="">Barcha turlar</option>
-            <option value="income">Kirim</option>
-            <option value="expense">Chiqim</option>
+            <option value="income">Kirim (+)</option>
+            <option value="expense">Chiqim (-)</option>
           </select>
 
           {/* Category Filter */}
           <select
             value={categoryId}
             onChange={(e) => { setCategoryId(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
           >
             <option value="">Barcha toifalar</option>
             {categories
               ?.filter((c: any) => !type || c.type === type)
               .map((cat: any) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.name} ({cat.type === 'income' ? 'Kirim' : 'Chiqim'})
+                  {cat.name}
                 </option>
               ))}
           </select>
 
-          {/* Month Filter */}
+          {/* Month */}
           <select
             value={month}
             onChange={(e) => { setMonth(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
           >
             <option value="">Barcha oylar</option>
-            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-              <option key={m} value={m}>
-                {new Date(2000, m - 1).toLocaleString('uz-UZ', { month: 'long' })}
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}-oy
               </option>
             ))}
           </select>
 
-          {/* Year Filter */}
+          {/* Year */}
           <select
             value={year}
             onChange={(e) => { setYear(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
           >
             <option value="">Barcha yillar</option>
-            {[2024, 2025, 2026, 2027].map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
           </select>
 
-          {/* Sort Filter */}
+          {/* Sort */}
           <select
             value={sort}
             onChange={(e) => { setSort(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
           >
-            <option value="date_desc">Sana (Yangi-Eski)</option>
-            <option value="date_asc">Sana (Eski-Yangi)</option>
-            <option value="amount_desc">Miqdor (Katta-Kichik)</option>
-            <option value="amount_asc">Miqdor (Kichik-Katta)</option>
-            <option value="title_asc">Nomi (A-Z)</option>
-            <option value="title_desc">Nomi (Z-A)</option>
+            <option value="date_desc">Eng yangi birinchi</option>
+            <option value="date_asc">Eng eski birinchi</option>
+            <option value="amount_desc">Summa (Yuqoridan)</option>
+            <option value="amount_asc">Summa (Pastdan)</option>
           </select>
         </div>
       </div>
 
-      {/* Main Table card */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm space-y-4">
+      {/* Transactions Table */}
+      <div className="bg-[#16161E] rounded-2xl border border-amber-500/20 overflow-hidden shadow-sm">
         {txLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-            <p className="text-xs text-slate-500">Yuklanmoqda...</p>
+          <div className="flex flex-col items-center justify-center p-12 space-y-3">
+            <div className="h-8 w-8 border-4 border-[#FBBF24] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-slate-400">Tranzaksiyalar yuklanmoqda...</p>
+          </div>
+        ) : transactionsList.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-amber-500/20 bg-black/40 text-xs font-bold text-[#FBBF24] uppercase">
+                  <th className="py-4 px-6">Nomi / Izoh</th>
+                  <th className="py-4 px-6">Kategoriya</th>
+                  <th className="py-4 px-6">Sana</th>
+                  <th className="py-4 px-6 text-right">Summa</th>
+                  <th className="py-4 px-6 text-center">Amallar</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-amber-500/10">
+                {transactionsList.map((tx: any) => (
+                  <tr key={tx.id} className="hover:bg-white/5 transition-colors group">
+                    <td className="py-4 px-6 font-bold text-white">
+                      <div className="flex items-center space-x-3">
+                        <div className="h-8 w-8 rounded-lg bg-[#FBBF24]/10 text-[#FBBF24] flex items-center justify-center">
+                          <ReceiptLongIcon style={{ fontSize: 18 }} />
+                        </div>
+                        <div>
+                          <div>{tx.title}</div>
+                          {tx.description && (
+                            <div className="text-xs font-normal text-slate-400">{tx.description}</div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold text-white"
+                        style={{ backgroundColor: tx.category_color || '#FBBF24' }}
+                      >
+                        {tx.category_name}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-slate-400 font-medium">
+                      {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}
+                    </td>
+                    <td className={`py-4 px-6 text-right font-black text-base ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                    </td>
+                    <td className="py-4 px-6 text-center">
+                      <div className="flex items-center justify-center space-x-2">
+                        <button
+                          onClick={() => handleOpenEdit(tx)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#FBBF24] hover:bg-white/5 transition-colors"
+                          title="Tahrirlash"
+                        >
+                          <EditIcon style={{ fontSize: 18 }} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(tx.id)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-white/5 transition-colors"
+                          title="O'chirish"
+                        >
+                          <DeleteIcon style={{ fontSize: 18 }} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
-          <>
-            <div className="overflow-x-auto">
-              {transactionsList.length > 0 ? (
-                <table className="w-full text-left text-sm border-collapse">
-                  <thead>
-                    <tr className="border-b border-slate-100 dark:border-slate-800/80 text-slate-400 font-semibold">
-                      <th className="pb-3 text-xs uppercase tracking-wider">Nomi</th>
-                      <th className="pb-3 text-xs uppercase tracking-wider">Turi</th>
-                      <th className="pb-3 text-xs uppercase tracking-wider">Toifasi</th>
-                      <th className="pb-3 text-xs uppercase tracking-wider">Sanasi</th>
-                      <th className="pb-3 text-right text-xs uppercase tracking-wider">Miqdori</th>
-                      <th className="pb-3 text-right text-xs uppercase tracking-wider">Amallar</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                    {transactionsList.map((tx: any) => (
-                      <tr key={tx.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                        <td className="py-3.5 font-medium max-w-[220px] truncate">
-                          <div>
-                            <div className="font-bold text-slate-900 dark:text-white">{tx.title}</div>
-                            {tx.description && <div className="text-xs text-slate-400 font-normal truncate">{tx.description}</div>}
-                          </div>
-                        </td>
-                        <td className="py-3.5">
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
-                            tx.type === 'income' 
-                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
-                              : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                          }`}>
-                            {tx.type === 'income' ? 'Kirim' : 'Chiqim'}
-                          </span>
-                        </td>
-                        <td className="py-3.5">
-                          <div className="flex items-center space-x-2">
-                            <span
-                              className="h-3 w-3 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: tx.category_color || '#ccc' }}
-                            />
-                            <span className="font-semibold text-slate-700 dark:text-slate-300">{tx.category_name}</span>
-                          </div>
-                        </td>
-                        <td className="py-3.5 text-xs text-slate-500 dark:text-slate-400">
-                          {tx.transaction_date.substring(0, 10)}
-                        </td>
-                        <td className={`py-3.5 text-right font-bold ${
-                          tx.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
-                        }`}>
-                          {tx.type === 'income' ? '+' : '-'} {formatCurrency(tx.amount)}
-                        </td>
-                        <td className="py-3.5 text-right">
-                          <div className="flex justify-end gap-1.5">
-                            <button
-                              onClick={() => handleOpenEdit(tx)}
-                              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-orange-600 hover:bg-orange-50/50 dark:hover:bg-slate-800 transition-colors"
-                              title="Tahrirlash"
-                            >
-                              <Edit3 className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(tx.id)}
-                              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-rose-600 hover:bg-rose-50/50 dark:hover:bg-slate-800 transition-colors"
-                              title="O'chirish"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className="py-12 text-center text-slate-400 text-sm flex flex-col items-center justify-center space-y-2">
-                  <ArrowRightLeft className="h-10 w-10 stroke-1" />
-                  <span>Qidiruv yoki filtrlarga mos keluvchi tranzaksiyalar topilmadi</span>
-                </div>
-              )}
-            </div>
+          <div className="p-12 text-center text-slate-400">
+            Tranzaksiyalar topilmadi.
+          </div>
+        )}
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-4">
-                <div className="text-xs text-slate-450">
-                  Jami <span className="font-semibold text-slate-700 dark:text-slate-300">{txResponse?.pagination?.total}</span> tadan 
-                  <span className="font-semibold text-slate-700 dark:text-slate-300"> {(activePage - 1) * limit + 1} - {Math.min(activePage * limit, txResponse?.pagination?.total)}</span>-oralig'i ko'rsatilmoqda
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    disabled={activePage === 1}
-                    onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                    className="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors disabled:opacity-40"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <span className="text-xs font-semibold px-2">
-                    {activePage} / {totalPages}
-                  </span>
-                  <button
-                    disabled={activePage === totalPages}
-                    onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                    className="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors disabled:opacity-40"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
+        {/* Pagination Controls */}
+        {txResponse?.pagination && (
+          <div className="p-4 border-t border-amber-500/20 bg-black/40 flex items-center justify-between">
+            <span className="text-xs text-slate-400">
+              Jami: <b className="text-white">{txResponse.pagination.totalItems}</b> ta tranzaksiya
+            </span>
+            <div className="flex items-center space-x-2">
+              <button
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+              >
+                <ChevronLeftIcon style={{ fontSize: 18 }} />
+              </button>
+              <span className="text-xs font-bold text-[#FBBF24] px-2">
+                {page} / {txResponse.pagination.totalPages || 1}
+              </span>
+              <button
+                disabled={page >= txResponse.pagination.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+              >
+                <ChevronRightIcon style={{ fontSize: 18 }} />
+              </button>
+            </div>
+          </div>
         )}
       </div>
 
-      {/* ADD / EDIT TRANSACTION MODAL */}
-      {(addOpen || editOpen) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => { setAddOpen(false); setEditOpen(false); }} />
-          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xl space-y-4 animate-[zoomIn_0.15s_ease-out]">
-            <h3 className="text-lg font-bold">
-              {editOpen ? 'Tranzaksiyani Tahrirlash' : 'Yangi Tranzaksiya Qo\'shish'}
-            </h3>
-            
-            <form onSubmit={handleSave} className="space-y-4">
-              <div className="flex bg-slate-100 dark:bg-slate-950 p-1 rounded-xl">
-                <button
-                  type="button"
-                  onClick={() => setTxType('expense')}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                    txType === 'expense' ? 'bg-white dark:bg-slate-850 text-rose-600 shadow' : 'text-slate-400'
-                  }`}
-                >
-                  Chiqim (Xarajat)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTxType('income')}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-colors ${
-                    txType === 'income' ? 'bg-white dark:bg-slate-850 text-emerald-600 shadow' : 'text-slate-400'
-                  }`}
-                >
-                  Kirim (Daromad)
-                </button>
-              </div>
+      {/* Modal: Add Transaction */}
+      {addOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-white">Yangi Tranzaksiya Qo'shish 🟡</h3>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Nomi</label>
+            <form onSubmit={handleCreateSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Nomi</label>
                 <input
                   type="text"
-                  required
-                  placeholder="Kvartira ijarasi..."
+                  placeholder="Masalan: Bozorlik"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Miqdori</label>
+                <div>
+                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
-                    required
-                    min="0.01"
-                    step="0.01"
-                    placeholder="500000"
+                    placeholder="50000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    required
                   />
                 </div>
-                
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Sana</label>
-                  <input
-                    type="date"
-                    required
-                    value={txDate}
-                    onChange={(e) => setTxDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
-                  />
+                <div>
+                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Turi</label>
+                  <select
+                    value={txType}
+                    onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  >
+                    <option value="expense">Xarajat (-)</option>
+                    <option value="income">Daromad (+)</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toifa (Kategoriya)</label>
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Kategoriya</label>
                 <select
+                  value={txCategoryId}
+                  onChange={(e) => setTxCategoryId(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
                   required
-                  value={formCategoryId}
-                  onChange={(e) => setFormCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
                 >
-                  <option value="">Tanlang...</option>
+                  <option value="">Kategoriyani tanlang</option>
                   {categories
                     ?.filter((c: any) => c.type === txType)
-                    .map((cat: any) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
+                    .map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
                       </option>
                     ))}
                 </select>
-                {categories?.filter((c: any) => c.type === txType).length === 0 && (
-                  <p className="text-xs text-amber-500">Ushbu turdagi kategoriyalar yo'q. Avval toifa qo'shing!</p>
-                )}
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tavsif (Ixtiyoriy)</label>
-                <textarea
-                  placeholder="Qo'shimcha ma'lumot..."
-                  rows={2}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-905 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Sana</label>
+                <input
+                  type="date"
+                  value={txDate}
+                  onChange={(e) => setTxDate(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  required
                 />
               </div>
 
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => { setAddOpen(false); setEditOpen(false); }}
-                  className="flex-1 py-2.5 border border-slate-200 dark:border-slate-800 text-sm font-semibold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-950 transition-colors"
+                  onClick={() => setAddOpen(false)}
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow transition-colors flex items-center justify-center gap-1.5"
+                  disabled={createTxMutation.isPending}
+                  className="flex-1 py-2.5 bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold rounded-xl shadow transition-colors"
                 >
-                  {(createMutation.isPending || updateMutation.isPending) && <Loader2 className="h-4 w-4 animate-spin" />}
                   Saqlash
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Edit Transaction */}
+      {editOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#18181B] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-white">Tranzaksiyani Tahrirlash 🟡</h3>
+
+            <form onSubmit={handleUpdateSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Nomi</label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Summa ({currencySymbol})</label>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Turi</label>
+                  <select
+                    value={txType}
+                    onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  >
+                    <option value="expense">Xarajat (-)</option>
+                    <option value="income">Daromad (+)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Kategoriya</label>
+                <select
+                  value={txCategoryId}
+                  onChange={(e) => setTxCategoryId(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  required
+                >
+                  <option value="">Kategoriyani tanlang</option>
+                  {categories
+                    ?.filter((c: any) => c.type === txType)
+                    .map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#FBBF24] uppercase">Sana</label>
+                <input
+                  type="date"
+                  value={txDate}
+                  onChange={(e) => setTxDate(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  required
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditOpen(false)}
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  type="submit"
+                  disabled={updateTxMutation.isPending}
+                  className="flex-1 py-2.5 bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold rounded-xl shadow transition-colors"
+                >
+                  Yangilash
                 </button>
               </div>
             </form>

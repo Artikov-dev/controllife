@@ -9,7 +9,7 @@ import budgetRoutes from './routes/budget.routes';
 import adminRoutes from './routes/admin.routes';
 import recurringRoutes from './routes/recurring.routes';
 import { errorHandler } from './middlewares/errorHandler';
-import { swaggerUi, swaggerSpec } from './config/swagger';
+import { swaggerUi, swaggerSpec, swaggerUiOptions } from './config/swagger';
 
 const app = express();
 
@@ -28,8 +28,9 @@ app.use(
 
 app.use(express.json());
 
-// Swagger API Documentation UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Swagger API Documentation UI (Gold & Black Theme)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
+
 
 // General rate limiter to prevent DOS
 const apiLimiter = rateLimit({

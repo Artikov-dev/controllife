@@ -2,19 +2,18 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/useAuthStore';
 import apiClient from '../api/client';
-import { 
-  Users, 
-  UserMinus, 
-  Search, 
-  Coins, 
-  Activity, 
-  Loader2, 
-  ChevronLeft, 
-  ChevronRight,
-  ShieldAlert,
-  Ban,
-  Unlock
-} from 'lucide-react';
+import {
+  People as PeopleIcon,
+  GroupRemove as GroupRemoveIcon,
+  Search as SearchIcon,
+  MonetizationOn as MonetizationOnIcon,
+  QueryStats as QueryStatsIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  AdminPanelSettings as AdminPanelSettingsIcon,
+  Block as BlockIcon,
+  LockOpen as LockOpenIcon,
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 
 export default function AdminDashboard() {
@@ -40,290 +39,259 @@ export default function AdminDashboard() {
   const { data: usersResponse, isLoading: usersLoading } = useQuery({
     queryKey: ['adminUsers', page, search, isBlocked],
     queryFn: async () => {
-      const params = new URLSearchParams();
-      params.append('page', page.toString());
-      params.append('limit', limit.toString());
-      if (search) params.append('search', search);
-      if (isBlocked !== '') params.append('isBlocked', isBlocked);
+      const params: any = { page, limit };
+      if (search) params.search = search;
+      if (isBlocked !== '') params.is_blocked = isBlocked;
 
-      const res = await apiClient.get(`/api/admin/users?${params.toString()}`);
+      const res = await apiClient.get('/api/admin/users', { params });
       return res.data.data;
     },
   });
 
-  // Block/Unblock mutation
+  // Block/Unblock user mutation
   const blockMutation = useMutation({
-    mutationFn: async ({ id, isBlocked }: { id: number; isBlocked: boolean }) => {
-      const res = await apiClient.patch(`/api/admin/users/${id}/block`, { isBlocked });
+    mutationFn: async ({ id, is_blocked }: { id: number; is_blocked: boolean }) => {
+      const res = await apiClient.patch(`/api/admin/users/${id}/block`, { is_blocked });
       return res.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['adminUsers'] });
       queryClient.invalidateQueries({ queryKey: ['adminStats'] });
-      toast.success(data.message || 'Muvaffaqiyatli bajarildi');
+      toast.success(variables.is_blocked ? 'Foydalanuvchi bloklandi' : 'Foydalanuvchi blokdan chiqarildi');
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'Xatolik yuz berdi');
+      toast.error(err.response?.data?.message || 'Amalni bajarishda xatolik');
     },
   });
 
-  const handleToggleBlock = (userId: number, currentBlockStatus: boolean) => {
-    if (userId === currentUser?.id) {
-      toast.error("O'z hisobingizni bloklay olmaysiz!");
+  const handleToggleBlock = (user: any) => {
+    if (user.id === currentUser?.id) {
+      toast.error('O\'zingizning hisobingizni bloklay olmaysiz');
       return;
     }
-    const actionText = currentBlockStatus ? "blokdan chiqarishni" : "bloklashni";
-    if (window.confirm(`Haqiqatdan ham ushbu foydalanuvchini ${actionText} xohlaysizmi?`)) {
-      blockMutation.mutate({ id: userId, isBlocked: !currentBlockStatus });
+    const nextState = !user.is_blocked;
+    const actionText = nextState ? 'bloklamoqchimisiz' : 'blokdan chiqarmoqchimisiz';
+    if (confirm(`Rostdan ham ${user.full_name} foydalanuvchisini ${actionText}?`)) {
+      blockMutation.mutate({ id: user.id, is_blocked: nextState });
     }
-  };
-
-  const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('uz-UZ').format(val) + ' ' + (currentUser?.currency || 'UZS');
   };
 
   const usersList = usersResponse?.users || [];
-  const activePage = usersResponse?.pagination?.page || 1;
-  const totalPages = usersResponse?.pagination?.totalPages || 1;
+  const pagination = usersResponse?.pagination;
 
   return (
     <div className="space-y-8">
-      {/* Page Title Header */}
-      <div className="bg-white dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200/60 dark:border-slate-800/40 backdrop-blur-sm">
-        <div className="flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
-            <ShieldAlert className="h-6.5 w-6.5" />
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 backdrop-blur-sm">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight font-display text-white">Admin Boshqaruv Paneli 🟡</h1>
+          <p className="text-sm text-slate-400">Tizim foydalanuvchilari va umumiy platforma ko'rsatkichlari nazorati.</p>
+        </div>
+        <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-[#FBBF24]/10 border border-amber-500/30 text-[#FBBF24] text-xs font-bold">
+          <AdminPanelSettingsIcon style={{ fontSize: 18 }} />
+          <span>Admin Huquqi Faol</span>
+        </div>
+      </div>
+
+      {/* Global Platform Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Stat 1: Total Users */}
+        <div className="p-6 rounded-2xl bg-[#18181B] border border-amber-500/20 shadow-sm flex items-center space-x-4">
+          <div className="h-11 w-11 rounded-xl bg-[#FBBF24]/15 text-[#FBBF24] flex items-center justify-center flex-shrink-0">
+            <PeopleIcon style={{ fontSize: 24 }} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight font-display">Tizim Ma'muri (Admin Panel)</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Platforma ko'rsatkichlari, foydalanuvchilar holati va xavfsizlik nazorati.</p>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Jami Foydalanuvchilar</span>
+            <h3 className="text-2xl font-black font-display text-white mt-0.5">
+              {statsLoading ? '...' : stats?.totalUsers || 0}
+            </h3>
+          </div>
+        </div>
+
+        {/* Stat 2: Active Users */}
+        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-4">
+          <div className="h-11 w-11 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+            <QueryStatsIcon style={{ fontSize: 24 }} />
+          </div>
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Faol Hisoblar</span>
+            <h3 className="text-2xl font-black font-display text-white mt-0.5">
+              {statsLoading ? '...' : stats?.activeUsers || 0}
+            </h3>
+          </div>
+        </div>
+
+        {/* Stat 3: Blocked Users */}
+        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-4">
+          <div className="h-11 w-11 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center flex-shrink-0">
+            <GroupRemoveIcon style={{ fontSize: 24 }} />
+          </div>
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Bloklanganlar</span>
+            <h3 className="text-2xl font-black font-display text-white mt-0.5">
+              {statsLoading ? '...' : stats?.blockedUsers || 0}
+            </h3>
+          </div>
+        </div>
+
+        {/* Stat 4: Total System Transactions */}
+        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-4">
+          <div className="h-11 w-11 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0">
+            <MonetizationOnIcon style={{ fontSize: 24 }} />
+          </div>
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tizim Tranzaksiyalari</span>
+            <h3 className="text-2xl font-black font-display text-white mt-0.5">
+              {statsLoading ? '...' : stats?.totalTransactions || 0}
+            </h3>
           </div>
         </div>
       </div>
 
-      {/* KPI Stats Cards */}
-      {statsLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-28 bg-white dark:bg-slate-900 animate-pulse rounded-2xl border border-slate-200/60 dark:border-slate-800/50" />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Stat 1: Users */}
-          <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm flex items-center space-x-4.5">
-            <div className="h-11 w-11 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center flex-shrink-0">
-              <Users className="h-5.5 w-5.5" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Jami A'zolar</span>
-              <h2 className="text-2xl font-bold font-display mt-0.5 text-slate-900 dark:text-white">
-                {stats?.totalUsers}
-              </h2>
-            </div>
+      {/* Users Control Table */}
+      <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h3 className="font-bold text-[#FBBF24]">Foydalanuvchilar Ro'yxati</h3>
+            <p className="text-xs text-slate-400">Hisoblarni bloklash yoki cheklovlarni boshqarish</p>
           </div>
 
-          {/* Stat 2: Total Volume */}
-          <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm flex items-center space-x-4.5">
-            <div className="h-11 w-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
-              <Coins className="h-5.5 w-5.5" />
-            </div>
-            <div className="min-w-0">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tranzaksiyalar Hajmi</span>
-              <h2 className="text-xl font-bold font-display mt-0.5 text-slate-900 dark:text-white truncate">
-                {formatCurrency(stats?.totalTransactionVolume)}
-              </h2>
-            </div>
-          </div>
-
-          {/* Stat 3: Transaction Count */}
-          <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm flex items-center space-x-4.5">
-            <div className="h-11 w-11 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center flex-shrink-0">
-              <Activity className="h-5.5 w-5.5" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Operatsiyalar Soni</span>
-              <h2 className="text-2xl font-bold font-display mt-0.5 text-slate-900 dark:text-white">
-                {stats?.totalTransactions}
-              </h2>
-            </div>
-          </div>
-
-          {/* Stat 4: Blocked Users */}
-          <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm flex items-center space-x-4.5">
-            <div className="h-11 w-11 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center flex-shrink-0">
-              <UserMinus className="h-5.5 w-5.5" />
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Bloklanganlar</span>
-              <h2 className="text-2xl font-bold font-display mt-0.5 text-slate-900 dark:text-white">
-                {stats?.totalBlockedUsers}
-              </h2>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Grid listing users */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/50 shadow-sm space-y-4">
-        {/* Header and filters inside grid */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-4">
-          <h3 className="font-bold text-base">Tizim Foydalanuvchilari</h3>
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
             {/* Search */}
-            <div className="relative flex-1 sm:w-60">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            <div className="relative w-full sm:w-64">
+              <SearchIcon style={{ fontSize: 18 }} className="absolute left-3 top-2.5 text-slate-400" />
               <input
                 type="text"
-                placeholder="Ism yoki email bo'yicha..."
+                placeholder="Ism yoki email..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
               />
             </div>
-            {/* Block status */}
+
+            {/* Blocked Filter */}
             <select
               value={isBlocked}
               onChange={(e) => { setIsBlocked(e.target.value); setPage(1); }}
-              className="px-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+              className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24] w-full sm:w-auto"
             >
-              <option value="">Barcha holatlar</option>
-              <option value="false">Faol a'zolar</option>
-              <option value="true">Bloklanganlar</option>
+              <option value="">Barcha maqomlar</option>
+              <option value="false">Faol</option>
+              <option value="true">Bloklangan</option>
             </select>
           </div>
         </div>
 
         {usersLoading ? (
-          <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-            <p className="text-xs text-slate-500">Yuklanmoqda...</p>
+          <div className="flex flex-col items-center justify-center p-12 space-y-3">
+            <div className="h-8 w-8 border-4 border-[#FBBF24] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-slate-400">Foydalanuvchilar yuklanmoqda...</p>
+          </div>
+        ) : usersList.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-amber-500/20 bg-black/40 text-xs font-bold text-[#FBBF24] uppercase">
+                  <th className="py-4 px-6">Foydalanuvchi</th>
+                  <th className="py-4 px-6">Email</th>
+                  <th className="py-4 px-6">Roli</th>
+                  <th className="py-4 px-6">Holati</th>
+                  <th className="py-4 px-6 text-center">Boshqaruv</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-amber-500/10">
+                {usersList.map((u: any) => (
+                  <tr key={u.id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-4 px-6 font-bold text-white">
+                      <div className="flex items-center space-x-3">
+                        {u.avatar ? (
+                          <img src={u.avatar} alt={u.full_name} className="h-9 w-9 rounded-full border border-amber-500/30 object-cover" />
+                        ) : (
+                          <div className="h-9 w-9 rounded-full bg-[#FBBF24] text-[#111111] font-bold flex items-center justify-center text-xs">
+                            {u.full_name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div>
+                          <div>{u.full_name}</div>
+                          {u.id === currentUser?.id && (
+                            <span className="text-[10px] bg-[#FBBF24]/20 text-[#FBBF24] font-bold px-1.5 py-0.2 rounded">
+                              (Siz)
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-slate-400 font-medium">{u.email}</td>
+                    <td className="py-4 px-6">
+                      <span className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase ${
+                        u.role === 'admin' 
+                          ? 'bg-amber-500/10 text-[#FBBF24] border border-amber-500/30' 
+                          : 'bg-slate-800 text-slate-300'
+                      }`}>
+                        {u.role}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      {u.is_blocked ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">
+                          <BlockIcon style={{ fontSize: 14 }} /> Bloklangan
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                          <LockOpenIcon style={{ fontSize: 14 }} /> Faol
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-4 px-6 text-center">
+                      <button
+                        disabled={u.id === currentUser?.id || blockMutation.isPending}
+                        onClick={() => handleToggleBlock(u)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all disabled:opacity-40 ${
+                          u.is_blocked
+                            ? 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                        }`}
+                      >
+                        {u.is_blocked ? 'Blokdan chiqarish' : 'Bloklash'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm border-collapse">
-                <thead>
-                  <tr className="border-b border-slate-100 dark:border-slate-800/80 text-slate-400 font-semibold">
-                    <th className="pb-3 text-xs uppercase tracking-wider">Foydalanuvchi</th>
-                    <th className="pb-3 text-xs uppercase tracking-wider">Rol</th>
-                    <th className="pb-3 text-xs uppercase tracking-wider">Valyuta</th>
-                    <th className="pb-3 text-xs uppercase tracking-wider">Sana (Ro'yxat)</th>
-                    <th className="pb-3 text-xs uppercase tracking-wider">Holat</th>
-                    <th className="pb-3 text-right text-xs uppercase tracking-wider">Amallar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                  {usersList.map((usr: any) => (
-                    <tr key={usr.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                      <td className="py-3.5">
-                        <div className="flex items-center space-x-3">
-                          {usr.avatar ? (
-                            <img src={usr.avatar} alt={usr.full_name} className="h-9 w-9 rounded-full object-cover border border-slate-200 dark:border-slate-700" />
-                          ) : (
-                            <div className="h-9 w-9 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs flex items-center justify-center border border-slate-350">
-                              {usr.full_name.charAt(0).toUpperCase()}
-                            </div>
-                          )}
-                          <div>
-                            <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                              {usr.full_name}
-                              {usr.id === currentUser?.id && (
-                                <span className="text-[10px] bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 font-bold px-1.5 py-0.2 rounded">
-                                  Men
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-xs text-slate-400">{usr.email}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3.5 capitalize">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          usr.role === 'admin' 
-                            ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400' 
-                            : 'bg-slate-500/10 text-slate-600 dark:text-slate-400'
-                        }`}>
-                          {usr.role}
-                        </span>
-                      </td>
-                      <td className="py-3.5 font-medium text-xs">
-                        {usr.currency}
-                      </td>
-                      <td className="py-3.5 text-xs text-slate-500">
-                        {new Date(usr.created_at).toLocaleDateString('uz-UZ')}
-                      </td>
-                      <td className="py-3.5">
-                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
-                          usr.is_blocked 
-                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' 
-                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        }`}>
-                          {usr.is_blocked ? 'Bloklangan' : 'Faol'}
-                        </span>
-                      </td>
-                      <td className="py-3.5 text-right">
-                        {usr.id !== currentUser?.id && usr.role !== 'admin' ? (
-                          <button
-                            onClick={() => handleToggleBlock(usr.id, usr.is_blocked)}
-                            disabled={blockMutation.isPending}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all inline-flex items-center gap-1 border ${
-                              usr.is_blocked
-                                ? 'border-emerald-200 dark:border-emerald-900/40 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400'
-                                : 'border-rose-200 dark:border-rose-900/40 hover:bg-rose-50/50 dark:hover:bg-rose-955/20 text-rose-600 dark:text-rose-400'
-                            }`}
-                          >
-                            {usr.is_blocked ? (
-                              <>
-                                <Unlock className="h-3.5 w-3.5" />
-                                Ruxsat berish
-                              </>
-                            ) : (
-                              <>
-                                <Ban className="h-3.5 w-3.5" />
-                                Bloklash
-                              </>
-                            )}
-                          </button>
-                        ) : (
-                          <span className="text-xs text-slate-400 italic">Cheklangan</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="p-12 text-center text-slate-400">
+            Foydalanuvchilar topilmadi.
+          </div>
+        )}
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-4">
-                <div className="text-xs text-slate-450">
-                  Jami <span className="font-semibold text-slate-700 dark:text-slate-300">{usersResponse?.pagination?.total}</span> tadan 
-                  <span className="font-semibold text-slate-700 dark:text-slate-300"> {(activePage - 1) * limit + 1} - {Math.min(activePage * limit, usersResponse?.pagination?.total)}</span>-oralig'i
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    disabled={activePage === 1}
-                    onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                    className="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-40"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <span className="text-xs font-semibold px-2">
-                    {activePage} / {totalPages}
-                  </span>
-                  <button
-                    disabled={activePage === totalPages}
-                    onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                    className="p-2 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 disabled:opacity-40"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
+        {/* Pagination */}
+        {pagination && (
+          <div className="p-4 border-t border-amber-500/20 bg-black/40 flex items-center justify-between">
+            <span className="text-xs text-slate-400">
+              Jami: <b className="text-white">{pagination.totalItems}</b> foydalanuvchi
+            </span>
+            <div className="flex items-center space-x-2">
+              <button
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+              >
+                <ChevronLeftIcon style={{ fontSize: 18 }} />
+              </button>
+              <span className="text-xs font-bold text-[#FBBF24] px-2">
+                {page} / {pagination.totalPages || 1}
+              </span>
+              <button
+                disabled={page >= pagination.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+              >
+                <ChevronRightIcon style={{ fontSize: 18 }} />
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

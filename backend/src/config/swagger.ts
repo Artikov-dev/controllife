@@ -1,5 +1,5 @@
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUi, { SwaggerUiOptions } from 'swagger-ui-express';
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -74,7 +74,7 @@ const options: swaggerJSDoc.Options = {
             user_id: { type: 'integer', example: 1 },
             name: { type: 'string', example: 'Food & Dining' },
             icon: { type: 'string', example: 'utensils' },
-            color: { type: 'string', example: '#FF5733' },
+            color: { type: 'string', example: '#FBBF24' },
             type: { type: 'string', enum: ['income', 'expense'], example: 'expense' },
           },
         },
@@ -84,7 +84,7 @@ const options: swaggerJSDoc.Options = {
           properties: {
             name: { type: 'string', example: 'Food & Dining' },
             icon: { type: 'string', example: 'utensils' },
-            color: { type: 'string', example: '#FF5733' },
+            color: { type: 'string', example: '#FBBF24' },
             type: { type: 'string', enum: ['income', 'expense'], example: 'expense' },
           },
         },
@@ -529,8 +529,155 @@ const options: swaggerJSDoc.Options = {
       },
     },
   },
-  apis: ['./src/routes/*.ts'], // Path to the API docs
+  apis: [],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
+
+export const swaggerUiOptions: SwaggerUiOptions = {
+  customSiteTitle: 'Finance Tracker API Docs 🟡',
+  customCss: `
+    body {
+      background-color: #111111 !important;
+      color: #f4f4f5 !important;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    }
+    .swagger-ui .topbar {
+      background-color: #18181b !important;
+      border-bottom: 2px solid #FBBF24 !important;
+      padding: 12px 0 !important;
+    }
+    .swagger-ui .topbar a span {
+      color: #FBBF24 !important;
+      font-weight: 700 !important;
+      font-size: 1.25rem !important;
+    }
+    .swagger-ui .topbar .download-url-wrapper {
+      display: none !important;
+    }
+    .swagger-ui .info {
+      margin: 30px 0 !important;
+    }
+    .swagger-ui .info .title {
+      color: #FBBF24 !important;
+      font-weight: 800 !important;
+    }
+    .swagger-ui .info p, .swagger-ui .info li {
+      color: #d4d4d8 !important;
+    }
+    .swagger-ui .scheme-container {
+      background-color: #18181b !important;
+      box-shadow: none !important;
+      border: 1px solid rgba(251, 191, 36, 0.25) !important;
+      border-radius: 12px !important;
+    }
+    .swagger-ui .btn.authorize {
+      background-color: #FBBF24 !important;
+      color: #111111 !important;
+      border-color: #FBBF24 !important;
+      font-weight: 700 !important;
+      border-radius: 8px !important;
+      transition: all 0.2s ease !important;
+    }
+    .swagger-ui .btn.authorize:hover {
+      background-color: #FCD34D !important;
+      border-color: #FCD34D !important;
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.4) !important;
+    }
+    .swagger-ui .btn.authorize svg {
+      fill: #111111 !important;
+    }
+    .swagger-ui .opblock-tag {
+      color: #FBBF24 !important;
+      border-bottom: 1px solid rgba(251, 191, 36, 0.25) !important;
+      font-weight: 700 !important;
+    }
+    .swagger-ui .opblock {
+      background: #18181b !important;
+      border-radius: 12px !important;
+      border: 1px solid rgba(251, 191, 36, 0.15) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+      margin-bottom: 16px !important;
+    }
+    .swagger-ui .opblock .opblock-summary {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    .swagger-ui .opblock .opblock-summary-method {
+      border-radius: 6px !important;
+      font-weight: 700 !important;
+      text-shadow: none !important;
+      background-color: #FBBF24 !important;
+      color: #111111 !important;
+    }
+    .swagger-ui .opblock .opblock-summary-path {
+      color: #f4f4f5 !important;
+      font-weight: 600 !important;
+    }
+    .swagger-ui .opblock .opblock-summary-description {
+      color: #a1a1aa !important;
+    }
+    .swagger-ui .opblock-description-wrapper p, 
+    .swagger-ui .opblock-external-docs-wrapper p, 
+    .swagger-ui .opblock-title_normal p {
+      color: #d4d4d8 !important;
+    }
+    .swagger-ui table thead tr td, .swagger-ui table thead tr th {
+      color: #FBBF24 !important;
+      border-bottom: 1px solid rgba(251, 191, 36, 0.25) !important;
+    }
+    .swagger-ui .parameter__name {
+      color: #FBBF24 !important;
+    }
+    .swagger-ui .parameter__type {
+      color: #a1a1aa !important;
+    }
+    .swagger-ui input[type=text], .swagger-ui textarea, .swagger-ui select {
+      background-color: #111111 !important;
+      color: #f4f4f5 !important;
+      border: 1px solid rgba(251, 191, 36, 0.3) !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+    }
+    .swagger-ui input[type=text]:focus, .swagger-ui textarea:focus, .swagger-ui select:focus {
+      border-color: #FBBF24 !important;
+      outline: none !important;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.3) !important;
+    }
+    .swagger-ui .btn.execute {
+      background-color: #FBBF24 !important;
+      color: #111111 !important;
+      border-color: #FBBF24 !important;
+      font-weight: 700 !important;
+      border-radius: 8px !important;
+    }
+    .swagger-ui .btn.execute:hover {
+      background-color: #FCD34D !important;
+      border-color: #FCD34D !important;
+    }
+    .swagger-ui .highlight-code pre, .swagger-ui .microlight {
+      background: #111111 !important;
+      color: #FBBF24 !important;
+      border-radius: 8px !important;
+      border: 1px solid rgba(251, 191, 36, 0.2) !important;
+    }
+    .swagger-ui section.models {
+      border: 1px solid rgba(251, 191, 36, 0.25) !important;
+      border-radius: 12px !important;
+      background: #18181b !important;
+    }
+    .swagger-ui section.models h4 {
+      color: #FBBF24 !important;
+    }
+    .swagger-ui .model-title {
+      color: #FBBF24 !important;
+    }
+    .swagger-ui .model {
+      color: #d4d4d8 !important;
+    }
+    .swagger-ui .prop-type {
+      color: #FCD34D !important;
+    }
+  `,
+};
+
 export { swaggerUi };
