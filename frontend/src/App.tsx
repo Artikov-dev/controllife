@@ -36,7 +36,12 @@ export default function App() {
   const { user } = useAuthStore();
 
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       {/* Toast provider with dark/light auto styling support */}
       <Toaster position="top-right" richColors />
       

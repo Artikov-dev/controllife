@@ -466,27 +466,27 @@ export default function Dashboard() {
           <h1 className="text-2xl font-black tracking-tight font-display text-slate-900 dark:text-white">Xush kelibsiz, {user?.full_name}! 👋</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">Moliyaviy ko'rsatkichlaringiz va statistikangiz rejasi.</p>
         </div>
-        <div className="flex gap-3 w-full sm:w-auto">
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">
           <button
             onClick={() => window.print()}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-[#D97706] dark:text-[#FCD34D] text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
+            className="col-span-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-[#D97706] dark:text-[#FCD34D] text-xs font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
             title="PDF hisoboti sifatida saqlash va chop etish"
           >
-            <PrintIcon style={{ fontSize: 20 }} />
+            <PrintIcon style={{ fontSize: 18 }} />
             PDF Hisobot
           </button>
           <button
             onClick={() => setBudgetModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-slate-800 dark:text-slate-200 text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
+            className="col-span-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
           >
-            <SavingsIcon style={{ fontSize: 20 }} className="text-[#D97706] dark:text-[#FCD34D]" />
+            <SavingsIcon style={{ fontSize: 18 }} className="text-[#D97706] dark:text-[#FCD34D]" />
             Byudjet
           </button>
           <button
             onClick={() => setTxModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold shadow-md shadow-amber-500/20 transition-all no-print"
+            className="col-span-2 sm:col-span-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl gold-gradient text-white dark:text-[#0B0B0E] text-xs sm:text-sm font-extrabold shadow-md shadow-amber-500/20 transition-all no-print"
           >
-            <AddCircleIcon style={{ fontSize: 20 }} />
+            <AddCircleIcon style={{ fontSize: 18 }} />
             Tranzaksiya qo'shish
           </button>
         </div>

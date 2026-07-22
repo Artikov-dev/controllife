@@ -226,6 +226,8 @@ export default function Transactions() {
     toast.success('CSV hisoboti muvaffaqiyatli yuklab olindi! 📄');
   };
 
+  const currentMonthNum = (new Date().getMonth() + 1).toString();
+
   return (
     <div className="space-y-6">
       {/* Upper header */}
@@ -255,9 +257,65 @@ export default function Transactions() {
 
       {/* Filter panel */}
       <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-4 shadow-sm">
-        <div className="flex items-center space-x-2 text-[#D97706] dark:text-[#FCD34D] border-b border-amber-500/20 pb-3">
-          <FilterListIcon style={{ fontSize: 20 }} />
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Saralash va Filtrlash</h3>
+        <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
+          <div className="flex items-center space-x-2 text-[#D97706] dark:text-[#FCD34D]">
+            <FilterListIcon style={{ fontSize: 20 }} />
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Saralash va Filtrlash</h3>
+          </div>
+        </div>
+
+        {/* Mobile Horizontal Touch Filter Chips */}
+        <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
+          <button
+            onClick={() => { setType(''); setMonth(''); setSort('date_desc'); setPage(1); }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              !type && !month && sort === 'date_desc'
+                ? 'gold-gradient text-white dark:text-[#0B0B0E] shadow'
+                : 'bg-slate-100 dark:bg-[#0B0B0E] text-slate-700 dark:text-slate-300 border border-amber-500/20'
+            }`}
+          >
+            Barchasi
+          </button>
+          <button
+            onClick={() => { setType('expense'); setPage(1); }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              type === 'expense'
+                ? 'bg-rose-500 text-white shadow'
+                : 'bg-slate-100 dark:bg-[#0B0B0E] text-slate-700 dark:text-slate-300 border border-amber-500/20'
+            }`}
+          >
+            Chiqim (-)
+          </button>
+          <button
+            onClick={() => { setType('income'); setPage(1); }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              type === 'income'
+                ? 'bg-emerald-500 text-white shadow'
+                : 'bg-slate-100 dark:bg-[#0B0B0E] text-slate-700 dark:text-slate-300 border border-amber-500/20'
+            }`}
+          >
+            Kirim (+)
+          </button>
+          <button
+            onClick={() => { setMonth(currentMonthNum); setPage(1); }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              month === currentMonthNum
+                ? 'bg-[#D97706] dark:bg-[#FCD34D] text-white dark:text-[#0B0B0E] shadow'
+                : 'bg-slate-100 dark:bg-[#0B0B0E] text-slate-700 dark:text-slate-300 border border-amber-500/20'
+            }`}
+          >
+            Ushbu Oy 📅
+          </button>
+          <button
+            onClick={() => { setSort('amount_desc'); setPage(1); }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+              sort === 'amount_desc'
+                ? 'bg-[#D97706] dark:bg-[#FCD34D] text-white dark:text-[#0B0B0E] shadow'
+                : 'bg-slate-100 dark:bg-[#0B0B0E] text-slate-700 dark:text-slate-300 border border-amber-500/20'
+            }`}
+          >
+            Eng Yuqori 🔝
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import apiClient from '../api/client';
 import { 
   Dashboard as DashboardIcon,
   SwapHoriz as SwapHorizIcon,
@@ -16,6 +18,7 @@ import {
   ChevronRight as ChevronRightIcon,
   Settings as SettingsIcon,
   Person as PersonIcon,
+  Add as AddIcon,
 } from '@mui/icons-material';
 import { toast } from 'sonner';
 
@@ -23,13 +26,23 @@ export default function DashboardLayout() {
   const { user, logout, theme, toggleTheme, setAuth, accessToken, refreshToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [quickTxModalOpen, setQuickTxModalOpen] = useState(false);
 
   // Form states for profile edit
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [currency, setCurrency] = useState(user?.currency || 'UZS');
   const [avatar, setAvatar] = useState(user?.avatar || '');
+
+  // Form states for Mobile Quick Tx FAB
+  const [txTitle, setTxTitle] = useState('');
+  const [txAmount, setTxAmount] = useState('');
+  const [txType, setTxType] = useState<'income' | 'expense'>('expense');
+  const [txCategoryId, setTxCategoryId] = useState('');
+  const [txDate, setTxDate] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     if (user) {
@@ -55,6 +68,43 @@ export default function DashboardLayout() {
     }
   }, [user, navigate]);
 
+  // Fetch categories for Quick Tx modal
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await apiClient.get('/api/categories');
+      return res.data.data;
+    },
+    enabled: !!user,
+  });
+
+  // Quick Create Transaction Mutation
+  const createTxMutation = useMutation({
+    mutationFn: async (payload: any) => {
+      const res = await apiClient.post('/api/transactions', payload);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      setQuickTxModalOpen(false);
+      
+      // Reset
+      setTxTitle('');
+      setTxAmount('');
+      setTxCategoryId('');
+      
+      if (data.data.budgetWarning) {
+        toast.warning(data.data.budgetWarning.message, { duration: 6000 });
+      } else {
+        toast.success('Tranzaksiya muvaffaqiyatli saqlandi! ⚡');
+      }
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Xatolik yuz berdi');
+    },
+  });
+
   if (!user) return null;
 
   const handleLogout = () => {
@@ -79,6 +129,21 @@ export default function DashboardLayout() {
     }
     setProfileModalOpen(false);
     toast.success('Profil ma\'lumotlari muvaffaqiyatli yangilandi! 👤');
+  };
+
+  const handleQuickTxSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!txTitle || !txAmount || !txCategoryId || !txDate) {
+      toast.error('Barcha maydonlarni to\'ldiring');
+      return;
+    }
+    createTxMutation.mutate({
+      title: txTitle,
+      amount: parseFloat(txAmount),
+      transaction_date: txDate,
+      type: txType,
+      category_id: parseInt(txCategoryId, 10),
+    });
   };
 
   const navItems = [
@@ -290,6 +355,15 @@ export default function DashboardLayout() {
 
       </div>
 
+      {/* Mobile Floating Action Button (FAB +) */}
+      <button
+        onClick={() => setQuickTxModalOpen(true)}
+        className="md:hidden fixed bottom-20 right-4 z-40 h-14 w-14 rounded-full gold-gradient shadow-2xl shadow-amber-500/40 flex items-center justify-center text-white dark:text-[#0B0B0E] hover:scale-105 active:scale-95 transition-all border-2 border-white dark:border-[#16161E]"
+        title="Tranzaksiya qo'shish"
+      >
+        <AddIcon style={{ fontSize: 32 }} />
+      </button>
+
       {/* Fixed Mobile Bottom Navigation Bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-[#16161E]/95 backdrop-blur-xl border-t border-amber-500/20 px-2 py-2 flex justify-around items-center shadow-2xl">
         <Link
@@ -348,6 +422,106 @@ export default function DashboardLayout() {
           <span className="text-[10px] mt-0.5 font-bold">Profil</span>
         </button>
       </div>
+
+      {/* Modal: Quick Add Transaction from Mobile FAB */}
+      {quickTxModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">Tezkor Tranzaksiya ⚡</h3>
+              <button onClick={() => setQuickTxModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                <CloseIcon style={{ fontSize: 20 }} />
+              </button>
+            </div>
+
+            <form onSubmit={handleQuickTxSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Nomi</label>
+                <input
+                  type="text"
+                  placeholder="Masalan: Tushlik"
+                  value={txTitle}
+                  onChange={(e) => setTxTitle(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Summa ({user.currency || 'UZS'})</label>
+                  <input
+                    type="number"
+                    placeholder="30000"
+                    value={txAmount}
+                    onChange={(e) => setTxAmount(e.target.value)}
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Turi</label>
+                  <select
+                    value={txType}
+                    onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  >
+                    <option value="expense">Chiqim (-)</option>
+                    <option value="income">Kirim (+)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Kategoriya</label>
+                <select
+                  value={txCategoryId}
+                  onChange={(e) => setTxCategoryId(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  required
+                >
+                  <option value="">Kategoriyani tanlang</option>
+                  {categories
+                    ?.filter((c: any) => c.type === txType)
+                    .map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Sana</label>
+                <input
+                  type="date"
+                  value={txDate}
+                  onChange={(e) => setTxDate(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  required
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setQuickTxModalOpen(false)}
+                  className="flex-1 py-3 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  type="submit"
+                  disabled={createTxMutation.isPending}
+                  className="flex-1 py-3 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                >
+                  Saqlash
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal: Edit User Profile */}
       {profileModalOpen && (
