@@ -11,6 +11,7 @@ import {
   ChevronRight as ChevronRightIcon,
   FilterList as FilterListIcon,
   ReceiptLong as ReceiptLongIcon,
+  FileDownload as FileDownloadIcon,
 } from '@mui/icons-material';
 import { toast } from 'sonner';
 
@@ -195,6 +196,36 @@ export default function Transactions() {
 
   const transactionsList = txResponse?.transactions || [];
 
+  // CSV Report Export Handler
+  const exportToCSV = () => {
+    if (!transactionsList || transactionsList.length === 0) {
+      toast.error('Eksport qilish uchun tranzaksiyalar mavjud emas');
+      return;
+    }
+
+    const headers = ['Sana', 'Tranzaksiya Nomi', 'Kategoriya', 'Turi', `Summa (${currencySymbol})`, 'Izoh'];
+    const rows = transactionsList.map((tx: any) => [
+      `"${new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}"`,
+      `"${tx.title.replace(/"/g, '""')}"`,
+      `"${tx.category_name || ''}"`,
+      `"${tx.type === 'income' ? 'Kirim' : 'Chiqim'}"`,
+      `"${tx.amount}"`,
+      `"${(tx.description || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows.map((r: string[]) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `moliya_hisoboti_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('CSV hisoboti muvaffaqiyatli yuklab olindi! 📄');
+  };
+
   return (
     <div className="space-y-6">
       {/* Upper header */}
@@ -203,18 +234,28 @@ export default function Transactions() {
           <h1 className="text-2xl font-black tracking-tight font-display text-white">Tranzaksiyalar Boshqaruvi 🟡</h1>
           <p className="text-sm text-slate-400">Barcha kirim va chiqim operatsiyalaringiz ro'yxati va filtri.</p>
         </div>
-        <button
-          onClick={handleOpenAdd}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold shadow-lg shadow-amber-500/20 transition-all duration-150 w-full sm:w-auto"
-        >
-          <AddCircleIcon style={{ fontSize: 20 }} />
-          Yangi tranzaksiya
-        </button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            onClick={exportToCSV}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-[#FCD34D] hover:bg-white/5 text-sm font-bold transition-all w-full sm:w-auto"
+            title="CSV hisobotini yuklab olish"
+          >
+            <FileDownloadIcon style={{ fontSize: 20 }} />
+            Export CSV
+          </button>
+          <button
+            onClick={handleOpenAdd}
+            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#FBBF24] hover:bg-[#FCD34D] text-[#0B0B0E] text-sm font-bold shadow-lg shadow-amber-500/20 transition-all w-full sm:w-auto"
+          >
+            <AddCircleIcon style={{ fontSize: 20 }} />
+            Yangi tranzaksiya
+          </button>
+        </div>
       </div>
 
       {/* Filter panel */}
       <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-4">
-        <div className="flex items-center space-x-2 text-[#FBBF24] border-b border-amber-500/20 pb-3">
+        <div className="flex items-center space-x-2 text-[#FCD34D] border-b border-amber-500/20 pb-3">
           <FilterListIcon style={{ fontSize: 20 }} />
           <h3 className="text-sm font-bold text-white">Saralash va Filtrlash</h3>
         </div>
@@ -228,7 +269,7 @@ export default function Transactions() {
               placeholder="Qidiruv..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
             />
           </div>
 
@@ -236,7 +277,7 @@ export default function Transactions() {
           <select
             value={type}
             onChange={(e) => { setType(e.target.value); setCategoryId(''); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha turlar</option>
             <option value="income">Kirim (+)</option>
@@ -247,7 +288,7 @@ export default function Transactions() {
           <select
             value={categoryId}
             onChange={(e) => { setCategoryId(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha toifalar</option>
             {categories
@@ -263,7 +304,7 @@ export default function Transactions() {
           <select
             value={month}
             onChange={(e) => { setMonth(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha oylar</option>
             {Array.from({ length: 12 }, (_, i) => (
@@ -277,7 +318,7 @@ export default function Transactions() {
           <select
             value={year}
             onChange={(e) => { setYear(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha yillar</option>
             <option value="2026">2026</option>
@@ -289,7 +330,7 @@ export default function Transactions() {
           <select
             value={sort}
             onChange={(e) => { setSort(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#111111] text-white focus:outline-none focus:border-[#FBBF24]"
+            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="date_desc">Eng yangi birinchi</option>
             <option value="date_asc">Eng eski birinchi</option>
@@ -303,14 +344,14 @@ export default function Transactions() {
       <div className="bg-[#16161E] rounded-2xl border border-amber-500/20 overflow-hidden shadow-sm">
         {txLoading ? (
           <div className="flex flex-col items-center justify-center p-12 space-y-3">
-            <div className="h-8 w-8 border-4 border-[#FBBF24] border-t-transparent rounded-full animate-spin"></div>
+            <div className="h-8 w-8 border-4 border-[#F59E0B] border-t-transparent rounded-full animate-spin"></div>
             <p className="text-sm text-slate-400">Tranzaksiyalar yuklanmoqda...</p>
           </div>
         ) : transactionsList.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm border-collapse">
               <thead>
-                <tr className="border-b border-amber-500/20 bg-black/40 text-xs font-bold text-[#FBBF24] uppercase">
+                <tr className="border-b border-amber-500/20 bg-[#0B0B0E]/60 text-xs font-bold text-[#FCD34D] uppercase">
                   <th className="py-4 px-6">Nomi / Izoh</th>
                   <th className="py-4 px-6">Kategoriya</th>
                   <th className="py-4 px-6">Sana</th>
@@ -323,7 +364,7 @@ export default function Transactions() {
                   <tr key={tx.id} className="hover:bg-white/5 transition-colors group">
                     <td className="py-4 px-6 font-bold text-white">
                       <div className="flex items-center space-x-3">
-                        <div className="h-8 w-8 rounded-lg bg-[#FBBF24]/10 text-[#FBBF24] flex items-center justify-center">
+                        <div className="h-8 w-8 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B] flex items-center justify-center">
                           <ReceiptLongIcon style={{ fontSize: 18 }} />
                         </div>
                         <div>
@@ -336,8 +377,8 @@ export default function Transactions() {
                     </td>
                     <td className="py-4 px-6">
                       <span
-                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold text-white"
-                        style={{ backgroundColor: tx.category_color || '#FBBF24' }}
+                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
+                        style={{ backgroundColor: tx.category_color || '#F59E0B' }}
                       >
                         {tx.category_name}
                       </span>
@@ -352,7 +393,7 @@ export default function Transactions() {
                       <div className="flex items-center justify-center space-x-2">
                         <button
                           onClick={() => handleOpenEdit(tx)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#FBBF24] hover:bg-white/5 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#FCD34D] hover:bg-white/5 transition-colors"
                           title="Tahrirlash"
                         >
                           <EditIcon style={{ fontSize: 18 }} />
@@ -379,7 +420,7 @@ export default function Transactions() {
 
         {/* Pagination Controls */}
         {txResponse?.pagination && (
-          <div className="p-4 border-t border-amber-500/20 bg-black/40 flex items-center justify-between">
+          <div className="p-4 border-t border-amber-500/20 bg-[#0B0B0E]/60 flex items-center justify-between">
             <span className="text-xs text-slate-400">
               Jami: <b className="text-white">{txResponse.pagination.totalItems}</b> ta tranzaksiya
             </span>
@@ -391,7 +432,7 @@ export default function Transactions() {
               >
                 <ChevronLeftIcon style={{ fontSize: 18 }} />
               </button>
-              <span className="text-xs font-bold text-[#FBBF24] px-2">
+              <span className="text-xs font-bold text-[#FCD34D] px-2">
                 {page} / {txResponse.pagination.totalPages || 1}
               </span>
               <button
@@ -414,35 +455,35 @@ export default function Transactions() {
 
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   placeholder="Masalan: Bozorlik"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     placeholder="50000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={txType}
                     onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -451,11 +492,11 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -470,12 +511,12 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -491,7 +532,7 @@ export default function Transactions() {
                 <button
                   type="submit"
                   disabled={createTxMutation.isPending}
-                  className="flex-1 py-2.5 bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Saqlash
                 </button>
@@ -504,38 +545,38 @@ export default function Transactions() {
       {/* Modal: Edit Transaction */}
       {editOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#18181B] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
             <h3 className="text-lg font-black text-white">Tranzaksiyani Tahrirlash 🟡</h3>
 
             <form onSubmit={handleUpdateSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FBBF24] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={txType}
                     onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -544,11 +585,11 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -563,12 +604,12 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FBBF24] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#111111] text-white text-sm focus:outline-none focus:border-[#FBBF24]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -584,7 +625,7 @@ export default function Transactions() {
                 <button
                   type="submit"
                   disabled={updateTxMutation.isPending}
-                  className="flex-1 py-2.5 bg-[#FBBF24] hover:bg-[#FCD34D] text-[#111111] text-sm font-bold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Yangilash
                 </button>

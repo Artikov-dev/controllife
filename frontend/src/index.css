@@ -81,6 +81,82 @@
   background: linear-gradient(90deg, #FCD34D, #F59E0B, #D97706);
 }
 
+/* Custom Animated Icons Keyframes & Utilities */
+@keyframes coffeeSteam {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 0 4px rgba(252, 211, 77, 0.5));
+  }
+  50% {
+    transform: translateY(-4px) scale(1.12);
+    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.9));
+  }
+}
+
+@keyframes lunchBounce {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-6deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(6deg);
+  }
+}
+
+@keyframes taxiDrive {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(4px) rotate(3deg);
+  }
+}
+
+@keyframes cartWiggle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.12) rotate(-5deg);
+  }
+  60% {
+    transform: scale(1.12) rotate(5deg);
+  }
+}
+
+@keyframes goldFloatPulse {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+  }
+  50% {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 16px rgba(252, 211, 77, 0.9));
+  }
+}
+
+.animate-coffee-steam {
+  animation: coffeeSteam 2.4s infinite ease-in-out;
+}
+
+.animate-lunch-bounce {
+  animation: lunchBounce 2.8s infinite ease-in-out;
+}
+
+.animate-taxi-drive {
+  animation: taxiDrive 2s infinite ease-in-out;
+}
+
+.animate-cart-pulse {
+  animation: cartWiggle 2.6s infinite ease-in-out;
+}
+
+.animate-gold-pulse {
+  animation: goldFloatPulse 3s infinite ease-in-out;
+}
+
 /* Custom Scrollbar in High-Contrast Gold Theme */
 ::-webkit-scrollbar {
   width: 6px;

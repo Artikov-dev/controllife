@@ -13,14 +13,30 @@ import {
   NightsStay as MoonIcon,
   Menu as MenuIcon,
   Close as CloseIcon,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  Settings as SettingsIcon,
 } from '@mui/icons-material';
+import { toast } from 'sonner';
 
 export default function DashboardLayout() {
-  const { user, logout, theme, toggleTheme } = useAuthStore();
+  const { user, logout, theme, toggleTheme, setAuth, accessToken, refreshToken } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+
+  // Form states for profile edit
+  const [fullName, setFullName] = useState(user?.full_name || '');
+  const [currency, setCurrency] = useState(user?.currency || 'UZS');
+  const [avatar, setAvatar] = useState(user?.avatar || '');
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.full_name);
+      setCurrency(user.currency || 'UZS');
+      setAvatar(user.avatar || '');
+    }
+  }, [user]);
 
   // Sync theme class
   useEffect(() => {
@@ -43,6 +59,25 @@ export default function DashboardLayout() {
   const handleLogout = () => {
     logout();
     navigate('/auth/login');
+  };
+
+  const handleSaveProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName) {
+      toast.error('Ismingizni kiriting');
+      return;
+    }
+    const updatedUser = {
+      ...user,
+      full_name: fullName,
+      currency: currency,
+      avatar: avatar || null,
+    };
+    if (accessToken && refreshToken) {
+      setAuth(updatedUser, accessToken, refreshToken);
+    }
+    setProfileModalOpen(false);
+    toast.success('Profil ma\'lumotlari muvaffaqiyatli yangilandi! 👤');
   };
 
   const navItems = [
@@ -99,17 +134,23 @@ export default function DashboardLayout() {
         {/* User Card / Footer */}
         <div className="p-4 border-t border-amber-500/15 bg-[#0B0B0E]/60">
           <div className="flex items-center space-x-3 p-2 rounded-xl">
-            {user.avatar ? (
-              <img src={user.avatar} alt={user.full_name} className="h-10 w-10 rounded-full border-2 border-[#F59E0B] object-cover" />
-            ) : (
-              <div className="h-10 w-10 rounded-full gold-gradient text-[#0B0B0E] font-black flex items-center justify-center border-2 border-[#FCD34D]">
-                {user.full_name.charAt(0).toUpperCase()}
+            <button
+              onClick={() => setProfileModalOpen(true)}
+              className="flex items-center space-x-3 flex-1 min-w-0 text-left group"
+              title="Profil Sozlamalari"
+            >
+              {user.avatar ? (
+                <img src={user.avatar} alt={user.full_name} className="h-10 w-10 rounded-full border-2 border-[#F59E0B] object-cover group-hover:scale-105 transition-transform" />
+              ) : (
+                <div className="h-10 w-10 rounded-full gold-gradient text-[#0B0B0E] font-black flex items-center justify-center border-2 border-[#FCD34D] group-hover:scale-105 transition-transform">
+                  {user.full_name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-bold truncate text-white group-hover:text-[#FCD34D] transition-colors">{user.full_name}</h4>
+                <span className="text-xs text-[#FCD34D] capitalize font-semibold">{user.role}</span>
               </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-bold truncate text-white">{user.full_name}</h4>
-              <span className="text-xs text-[#FCD34D] capitalize font-semibold">{user.role}</span>
-            </div>
+            </button>
             <button
               onClick={handleLogout}
               className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-white/5 transition-colors"
@@ -165,7 +206,10 @@ export default function DashboardLayout() {
             </nav>
 
             <div className="pt-4 border-t border-amber-500/15 flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+              <button
+                onClick={() => { setSidebarOpen(false); setProfileModalOpen(true); }}
+                className="flex items-center space-x-3 text-left"
+              >
                 <div className="h-9 w-9 rounded-full gold-gradient text-[#0B0B0E] flex items-center justify-center font-extrabold text-sm">
                   {user.full_name.charAt(0).toUpperCase()}
                 </div>
@@ -173,7 +217,7 @@ export default function DashboardLayout() {
                   <h4 className="text-sm font-bold text-white leading-none">{user.full_name}</h4>
                   <span className="text-xs text-[#FCD34D] capitalize font-semibold">{user.role}</span>
                 </div>
-              </div>
+              </button>
               <button
                 onClick={handleLogout}
                 className="p-2 rounded-lg text-slate-400 hover:text-rose-400"
@@ -218,7 +262,11 @@ export default function DashboardLayout() {
             <div className="h-6 w-px bg-amber-500/15 hidden sm:block" />
 
             {/* Profile trigger */}
-            <div className="items-center space-x-3 hidden sm:flex">
+            <button
+              onClick={() => setProfileModalOpen(true)}
+              className="items-center space-x-3 hidden sm:flex hover:bg-white/5 p-1.5 rounded-xl border border-amber-500/15 transition-all"
+              title="Profil Sozlamalari"
+            >
               {user.avatar ? (
                 <img src={user.avatar} alt={user.full_name} className="h-8 w-8 rounded-full border border-[#F59E0B] object-cover" />
               ) : (
@@ -226,8 +274,9 @@ export default function DashboardLayout() {
                   {user.full_name.charAt(0).toUpperCase()}
                 </div>
               )}
-              <span className="text-sm font-bold text-white">{user.full_name.split(' ')[0]}</span>
-            </div>
+              <span className="text-sm font-bold text-white pr-1">{user.full_name.split(' ')[0]}</span>
+              <SettingsIcon style={{ fontSize: 16 }} className="text-[#FCD34D]" />
+            </button>
           </div>
         </header>
 
@@ -239,6 +288,74 @@ export default function DashboardLayout() {
         </main>
 
       </div>
+
+      {/* Modal: Edit User Profile */}
+      {profileModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-black text-white">Profil Sozlamalari ⚙️</h3>
+              <button onClick={() => setProfileModalOpen(false)} className="text-slate-400 hover:text-white">
+                <CloseIcon style={{ fontSize: 20 }} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveProfile} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">To'liq Ismingiz</label>
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Asosiy Valyuta</label>
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                >
+                  <option value="UZS">UZS (so'm)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="RUB">RUB (₽)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-[#FCD34D] uppercase">Avatar Rasm URL Havolasi</label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={avatar}
+                  onChange={(e) => setAvatar(e.target.value)}
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setProfileModalOpen(false)}
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                >
+                  Saqlash
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
