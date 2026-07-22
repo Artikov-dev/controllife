@@ -229,23 +229,23 @@ export default function Transactions() {
   return (
     <div className="space-y-6">
       {/* Upper header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 shadow-sm dark:shadow-xl">
         <div>
-          <h1 className="text-2xl font-black tracking-tight font-display text-white">Tranzaksiyalar Boshqaruvi 🟡</h1>
-          <p className="text-sm text-slate-400">Barcha kirim va chiqim operatsiyalaringiz ro'yxati va filtri.</p>
+          <h1 className="text-2xl font-black tracking-tight font-display text-slate-900 dark:text-white">Tranzaksiyalar Boshqaruvi 🟡</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Barcha kirim va chiqim operatsiyalaringiz ro'yxati va filtri.</p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={exportToCSV}
-            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-[#FCD34D] hover:bg-white/5 text-sm font-bold transition-all w-full sm:w-auto"
-            title="CSV hisobotini yuklab olish"
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-[#D97706] dark:text-[#FCD34D] hover:bg-slate-100 dark:hover:bg-white/5 text-sm font-bold transition-all w-full sm:w-auto"
+            title="CSV hisoboti sifatida yuklab olish"
           >
             <FileDownloadIcon style={{ fontSize: 20 }} />
             Export CSV
           </button>
           <button
             onClick={handleOpenAdd}
-            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#FBBF24] hover:bg-[#FCD34D] text-[#0B0B0E] text-sm font-bold shadow-lg shadow-amber-500/20 transition-all w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl gold-gradient text-white dark:text-[#0B0B0E] text-sm font-bold shadow-md shadow-amber-500/20 transition-all w-full sm:w-auto"
           >
             <AddCircleIcon style={{ fontSize: 20 }} />
             Yangi tranzaksiya
@@ -254,22 +254,22 @@ export default function Transactions() {
       </div>
 
       {/* Filter panel */}
-      <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-4">
-        <div className="flex items-center space-x-2 text-[#FCD34D] border-b border-amber-500/20 pb-3">
+      <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-4 shadow-sm">
+        <div className="flex items-center space-x-2 text-[#D97706] dark:text-[#FCD34D] border-b border-amber-500/20 pb-3">
           <FilterListIcon style={{ fontSize: 20 }} />
-          <h3 className="text-sm font-bold text-white">Saralash va Filtrlash</h3>
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Saralash va Filtrlash</h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {/* Search */}
           <div className="relative">
-            <SearchIcon style={{ fontSize: 18 }} className="absolute left-3 top-3 text-slate-400" />
+            <SearchIcon style={{ fontSize: 18 }} className="absolute left-3 top-3.5 text-slate-400" />
             <input
               type="text"
               placeholder="Qidiruv..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+              className="w-full pl-9 pr-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
             />
           </div>
 
@@ -277,7 +277,7 @@ export default function Transactions() {
           <select
             value={type}
             onChange={(e) => { setType(e.target.value); setCategoryId(''); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+            className="px-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha turlar</option>
             <option value="income">Kirim (+)</option>
@@ -288,7 +288,7 @@ export default function Transactions() {
           <select
             value={categoryId}
             onChange={(e) => { setCategoryId(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+            className="px-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha toifalar</option>
             {categories
@@ -304,7 +304,7 @@ export default function Transactions() {
           <select
             value={month}
             onChange={(e) => { setMonth(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+            className="px-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha oylar</option>
             {Array.from({ length: 12 }, (_, i) => (
@@ -318,7 +318,7 @@ export default function Transactions() {
           <select
             value={year}
             onChange={(e) => { setYear(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+            className="px-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="">Barcha yillar</option>
             <option value="2026">2026</option>
@@ -330,7 +330,7 @@ export default function Transactions() {
           <select
             value={sort}
             onChange={(e) => { setSort(e.target.value); setPage(1); }}
-            className="px-4 py-2 text-sm rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white focus:outline-none focus:border-[#F59E0B]"
+            className="px-4 py-3 text-sm rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white focus:outline-none focus:border-[#F59E0B]"
           >
             <option value="date_desc">Eng yangi birinchi</option>
             <option value="date_asc">Eng eski birinchi</option>
@@ -340,105 +340,163 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* Transactions Table */}
-      <div className="bg-[#16161E] rounded-2xl border border-amber-500/20 overflow-hidden shadow-sm">
+      {/* Transactions Container */}
+      <div className="bg-white dark:bg-[#16161E] rounded-2xl border border-amber-500/20 overflow-hidden shadow-sm">
         {txLoading ? (
           <div className="flex flex-col items-center justify-center p-12 space-y-3">
             <div className="h-8 w-8 border-4 border-[#F59E0B] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-sm text-slate-400">Tranzaksiyalar yuklanmoqda...</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Tranzaksiyalar yuklanmoqda...</p>
           </div>
         ) : transactionsList.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm border-collapse">
-              <thead>
-                <tr className="border-b border-amber-500/20 bg-[#0B0B0E]/60 text-xs font-bold text-[#FCD34D] uppercase">
-                  <th className="py-4 px-6">Nomi / Izoh</th>
-                  <th className="py-4 px-6">Kategoriya</th>
-                  <th className="py-4 px-6">Sana</th>
-                  <th className="py-4 px-6 text-right">Summa</th>
-                  <th className="py-4 px-6 text-center">Amallar</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-amber-500/10">
-                {transactionsList.map((tx: any) => (
-                  <tr key={tx.id} className="hover:bg-white/5 transition-colors group">
-                    <td className="py-4 px-6 font-bold text-white">
-                      <div className="flex items-center space-x-3">
-                        <div className="h-8 w-8 rounded-lg bg-[#F59E0B]/10 text-[#F59E0B] flex items-center justify-center">
-                          <ReceiptLongIcon style={{ fontSize: 18 }} />
-                        </div>
-                        <div>
-                          <div>{tx.title}</div>
-                          {tx.description && (
-                            <div className="text-xs font-normal text-slate-400">{tx.description}</div>
-                          )}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span
-                        className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
+          <>
+            {/* Mobile View: Cards (< 768px) */}
+            <div className="md:hidden divide-y divide-amber-500/10">
+              {transactionsList.map((tx: any) => (
+                <div key={tx.id} className="p-4 space-y-2 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div 
+                        className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-white text-xs flex-shrink-0"
                         style={{ backgroundColor: tx.category_color || '#F59E0B' }}
                       >
-                        {tx.category_name}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-slate-400 font-medium">
-                      {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}
-                    </td>
-                    <td className={`py-4 px-6 text-right font-black text-base ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
-                    </td>
-                    <td className="py-4 px-6 text-center">
-                      <div className="flex items-center justify-center space-x-2">
-                        <button
-                          onClick={() => handleOpenEdit(tx)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#FCD34D] hover:bg-white/5 transition-colors"
-                          title="Tahrirlash"
-                        >
-                          <EditIcon style={{ fontSize: 18 }} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(tx.id)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-white/5 transition-colors"
-                          title="O'chirish"
-                        >
-                          <DeleteIcon style={{ fontSize: 18 }} />
-                        </button>
+                        {tx.category_name ? tx.category_name.charAt(0).toUpperCase() : 'T'}
                       </div>
-                    </td>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">{tx.title}</h4>
+                        <div className="flex items-center space-x-2 mt-0.5">
+                          <span
+                            className="inline-block px-2 py-0.5 rounded text-[10px] font-bold text-white"
+                            style={{ backgroundColor: tx.category_color || '#F59E0B' }}
+                          >
+                            {tx.category_name}
+                          </span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                            {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={`text-sm font-black ${tx.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                      {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                    </div>
+                  </div>
+
+                  {tx.description && (
+                    <p className="text-xs text-slate-500 dark:text-slate-400 pl-13 italic">{tx.description}</p>
+                  )}
+
+                  <div className="flex justify-end space-x-3 pt-1">
+                    <button
+                      onClick={() => handleOpenEdit(tx)}
+                      className="px-3 py-1.5 rounded-lg bg-amber-500/10 text-[#D97706] dark:text-[#FCD34D] text-xs font-bold flex items-center gap-1"
+                    >
+                      <EditIcon style={{ fontSize: 16 }} /> Tahrirlash
+                    </button>
+                    <button
+                      onClick={() => handleDelete(tx.id)}
+                      className="px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-500 text-xs font-bold flex items-center gap-1"
+                    >
+                      <DeleteIcon style={{ fontSize: 16 }} /> O'chirish
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop View: Table (>= 768px) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-sm border-collapse">
+                <thead>
+                  <tr className="border-b border-amber-500/20 bg-slate-100/80 dark:bg-[#0B0B0E]/60 text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">
+                    <th className="py-4 px-6">Nomi / Izoh</th>
+                    <th className="py-4 px-6">Kategoriya</th>
+                    <th className="py-4 px-6">Sana</th>
+                    <th className="py-4 px-6 text-right">Summa</th>
+                    <th className="py-4 px-6 text-center">Amallar</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-amber-500/10">
+                  {transactionsList.map((tx: any) => (
+                    <tr key={tx.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                      <td className="py-4 px-6 font-bold text-slate-900 dark:text-white">
+                        <div className="flex items-center space-x-3">
+                          <div className="h-8 w-8 rounded-lg bg-[#F59E0B]/10 text-[#D97706] dark:text-[#F59E0B] flex items-center justify-center">
+                            <ReceiptLongIcon style={{ fontSize: 18 }} />
+                          </div>
+                          <div>
+                            <div>{tx.title}</div>
+                            {tx.description && (
+                              <div className="text-xs font-normal text-slate-500 dark:text-slate-400">{tx.description}</div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6">
+                        <span
+                          className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
+                          style={{ backgroundColor: tx.category_color || '#F59E0B' }}
+                        >
+                          {tx.category_name}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 text-slate-500 dark:text-slate-400 font-medium">
+                        {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}
+                      </td>
+                      <td className={`py-4 px-6 text-right font-black text-base ${tx.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                        {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <div className="flex items-center justify-center space-x-2">
+                          <button
+                            onClick={() => handleOpenEdit(tx)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-[#D97706] dark:hover:text-[#FCD34D] hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                            title="Tahrirlash"
+                          >
+                            <EditIcon style={{ fontSize: 18 }} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(tx.id)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                            title="O'chirish"
+                          >
+                            <DeleteIcon style={{ fontSize: 18 }} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
-          <div className="p-12 text-center text-slate-400">
+          <div className="p-12 text-center text-slate-500 dark:text-slate-400">
             Tranzaksiyalar topilmadi.
           </div>
         )}
 
         {/* Pagination Controls */}
         {txResponse?.pagination && (
-          <div className="p-4 border-t border-amber-500/20 bg-[#0B0B0E]/60 flex items-center justify-between">
-            <span className="text-xs text-slate-400">
-              Jami: <b className="text-white">{txResponse.pagination.totalItems}</b> ta tranzaksiya
+          <div className="p-4 border-t border-amber-500/20 bg-slate-50 dark:bg-[#0B0B0E]/60 flex items-center justify-between">
+            <span className="text-xs text-slate-500 dark:text-slate-400">
+              Jami: <b className="text-slate-900 dark:text-white">{txResponse.pagination.totalItems}</b> ta tranzaksiya
             </span>
             <div className="flex items-center space-x-2">
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-white/5 text-slate-900 dark:text-white"
               >
                 <ChevronLeftIcon style={{ fontSize: 18 }} />
               </button>
-              <span className="text-xs font-bold text-[#FCD34D] px-2">
+              <span className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] px-2">
                 {page} / {txResponse.pagination.totalPages || 1}
               </span>
               <button
                 disabled={page >= txResponse.pagination.totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-white/5 text-white"
+                className="p-2 rounded-lg border border-amber-500/20 disabled:opacity-40 hover:bg-slate-100 dark:hover:bg-white/5 text-slate-900 dark:text-white"
               >
                 <ChevronRightIcon style={{ fontSize: 18 }} />
               </button>
@@ -449,41 +507,41 @@ export default function Transactions() {
 
       {/* Modal: Add Transaction */}
       {addOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Yangi Tranzaksiya Qo'shish 🟡</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Yangi Tranzaksiya Qo'shish 🟡</h3>
 
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   placeholder="Masalan: Bozorlik"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     placeholder="50000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={txType}
                     onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -492,11 +550,11 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -511,12 +569,12 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -525,14 +583,14 @@ export default function Transactions() {
                 <button
                   type="button"
                   onClick={() => setAddOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-3 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={createTxMutation.isPending}
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-3 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Saqlash
                 </button>
@@ -544,39 +602,39 @@ export default function Transactions() {
 
       {/* Modal: Edit Transaction */}
       {editOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Tranzaksiyani Tahrirlash 🟡</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Tranzaksiyani Tahrirlash 🟡</h3>
 
             <form onSubmit={handleUpdateSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={txType}
                     onChange={(e) => setTxType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -585,11 +643,11 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={txCategoryId}
                   onChange={(e) => setTxCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -604,12 +662,12 @@ export default function Transactions() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -618,14 +676,14 @@ export default function Transactions() {
                 <button
                   type="button"
                   onClick={() => setEditOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-3 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={updateTxMutation.isPending}
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-3 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Yangilash
                 </button>

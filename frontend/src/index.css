@@ -4,17 +4,17 @@
 
 @layer base {
   body {
-    @apply font-sans antialiased bg-[#0B0B0E] text-slate-100;
+    @apply font-sans antialiased bg-[#F4F4F7] text-slate-900 dark:bg-[#0B0B0E] dark:text-slate-100 transition-colors duration-200;
   }
 }
 
-/* Glassmorphism custom classes with High Contrast Gold accents */
+/* Glassmorphism custom classes with Dual-Theme Light & Dark accents */
 .glass {
-  background: rgba(22, 22, 30, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(251, 191, 36, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
 }
 
 .dark .glass {
@@ -26,22 +26,39 @@
 }
 
 .glass-gold {
+  background: rgba(245, 158, 11, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dark .glass-gold {
   background: rgba(251, 191, 36, 0.06);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(251, 191, 36, 0.25);
 }
 
-/* Gold Glow & High Contrast Gradients */
+/* Gold Glow & Dual-Theme Gradients */
 .gold-glow {
   box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
 }
 
 .gold-gradient {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+}
+
+.dark .gold-gradient {
   background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
 }
 
 .gold-gradient-text {
+  background: linear-gradient(135deg, #1E293B 0%, #D97706 60%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .gold-gradient-text {
   background: linear-gradient(135deg, #FFFFFF 0%, #FCD34D 50%, #F59E0B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -49,15 +66,20 @@
 
 /* Gold Button Base */
 .btn-gold {
-  background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
-  color: #0B0B0E;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #FFFFFF;
   font-weight: 800;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.dark .btn-gold {
+  background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+  color: #0B0B0E;
+}
+
 .btn-gold:hover {
-  background: linear-gradient(135deg, #FDE68A 0%, #FBBF24 100%);
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+  background: linear-gradient(135deg, #FBBF24 0%, #B45309 100%);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
   transform: translateY(-1px);
 }
 
@@ -81,99 +103,27 @@
   background: linear-gradient(90deg, #FCD34D, #F59E0B, #D97706);
 }
 
-/* Custom Animated Icons Keyframes & Utilities */
-@keyframes coffeeSteam {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    filter: drop-shadow(0 0 4px rgba(252, 211, 77, 0.5));
-  }
-  50% {
-    transform: translateY(-4px) scale(1.12);
-    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.9));
-  }
-}
-
-@keyframes lunchBounce {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  25% {
-    transform: scale(1.1) rotate(-6deg);
-  }
-  75% {
-    transform: scale(1.1) rotate(6deg);
-  }
-}
-
-@keyframes taxiDrive {
-  0%, 100% {
-    transform: translateX(0) rotate(0deg);
-  }
-  50% {
-    transform: translateX(4px) rotate(3deg);
-  }
-}
-
-@keyframes cartWiggle {
-  0%, 100% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.12) rotate(-5deg);
-  }
-  60% {
-    transform: scale(1.12) rotate(5deg);
-  }
-}
-
-@keyframes goldFloatPulse {
-  0%, 100% {
-    transform: translateY(0);
-    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
-  }
-  50% {
-    transform: translateY(-3px);
-    filter: drop-shadow(0 0 16px rgba(252, 211, 77, 0.9));
-  }
-}
-
-.animate-coffee-steam {
-  animation: coffeeSteam 2.4s infinite ease-in-out;
-}
-
-.animate-lunch-bounce {
-  animation: lunchBounce 2.8s infinite ease-in-out;
-}
-
-.animate-taxi-drive {
-  animation: taxiDrive 2s infinite ease-in-out;
-}
-
-.animate-cart-pulse {
-  animation: cartWiggle 2.6s infinite ease-in-out;
-}
-
-.animate-gold-pulse {
-  animation: goldFloatPulse 3s infinite ease-in-out;
-}
-
-/* Custom Scrollbar in High-Contrast Gold Theme */
+/* Custom Scrollbar in Dual-Theme Gold */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
+  background: #F4F4F7;
+}
+
+.dark ::-webkit-scrollbar-track {
   background: #0B0B0E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(251, 191, 36, 0.35);
+  background: rgba(245, 158, 11, 0.4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(251, 191, 36, 0.65);
+  background: rgba(245, 158, 11, 0.7);
 }
 
 /* Media Print Rules for Professional PDF Report */

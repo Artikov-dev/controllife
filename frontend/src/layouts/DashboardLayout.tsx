@@ -15,6 +15,7 @@ import {
   Close as CloseIcon,
   ChevronRight as ChevronRightIcon,
   Settings as SettingsIcon,
+  Person as PersonIcon,
 } from '@mui/icons-material';
 import { toast } from 'sonner';
 
@@ -91,13 +92,13 @@ export default function DashboardLayout() {
   const activeItem = navItems.find((item) => item.path === location.pathname);
 
   return (
-    <div className="min-h-screen flex bg-[#0B0B0E] text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex bg-[#F4F4F7] dark:bg-[#0B0B0E] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex md:w-64 flex-col fixed inset-y-0 left-0 bg-[#16161E] border-r border-amber-500/15 z-20 shadow-xl">
-        <div className="p-6 flex items-center space-x-3 border-b border-amber-500/15">
-          <div className="h-10 w-10 rounded-xl gold-gradient flex items-center justify-center shadow-lg shadow-amber-500/25">
-            <AccountBalanceWalletIcon className="text-[#0B0B0E]" style={{ fontSize: 24 }} />
+      <aside className="hidden md:flex md:w-64 flex-col fixed inset-y-0 left-0 bg-white dark:bg-[#16161E] border-r border-amber-500/20 dark:border-amber-500/15 z-20 shadow-lg dark:shadow-xl">
+        <div className="p-6 flex items-center space-x-3 border-b border-amber-500/20 dark:border-amber-500/15">
+          <div className="h-10 w-10 rounded-xl gold-gradient flex items-center justify-center shadow-md shadow-amber-500/20">
+            <AccountBalanceWalletIcon className="text-white dark:text-[#0B0B0E]" style={{ fontSize: 24 }} />
           </div>
           <span className="text-xl font-black tracking-tight font-display gold-gradient-text">
             Control Life 🟡
@@ -117,22 +118,22 @@ export default function DashboardLayout() {
                   to={item.path}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 group ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#FCD34D] to-[#F59E0B] text-[#0B0B0E] shadow-lg shadow-amber-500/25 font-black'
-                      : 'text-slate-400 hover:bg-white/5 hover:text-[#FCD34D]'
+                      ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white dark:from-[#FCD34D] dark:to-[#F59E0B] dark:text-[#0B0B0E] shadow-md shadow-amber-500/20 font-black'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[#D97706] dark:hover:text-[#FCD34D]'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <IconComponent style={{ fontSize: 20 }} className={isActive ? 'text-[#0B0B0E]' : 'text-slate-400 group-hover:text-[#FCD34D]'} />
+                    <IconComponent style={{ fontSize: 20 }} className={isActive ? 'text-white dark:text-[#0B0B0E]' : 'text-slate-500 dark:text-slate-400 group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D]'} />
                     <span>{item.name}</span>
                   </div>
-                  {!isActive && <ChevronRightIcon style={{ fontSize: 18 }} className="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-[#FCD34D]" />}
+                  {!isActive && <ChevronRightIcon style={{ fontSize: 18 }} className="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-[#D97706] dark:text-[#FCD34D]" />}
                 </Link>
               );
             })}
         </nav>
 
         {/* User Card / Footer */}
-        <div className="p-4 border-t border-amber-500/15 bg-[#0B0B0E]/60">
+        <div className="p-4 border-t border-amber-500/20 dark:border-amber-500/15 bg-slate-50/80 dark:bg-[#0B0B0E]/60">
           <div className="flex items-center space-x-3 p-2 rounded-xl">
             <button
               onClick={() => setProfileModalOpen(true)}
@@ -142,18 +143,18 @@ export default function DashboardLayout() {
               {user.avatar ? (
                 <img src={user.avatar} alt={user.full_name} className="h-10 w-10 rounded-full border-2 border-[#F59E0B] object-cover group-hover:scale-105 transition-transform" />
               ) : (
-                <div className="h-10 w-10 rounded-full gold-gradient text-[#0B0B0E] font-black flex items-center justify-center border-2 border-[#FCD34D] group-hover:scale-105 transition-transform">
+                <div className="h-10 w-10 rounded-full gold-gradient text-white dark:text-[#0B0B0E] font-black flex items-center justify-center border-2 border-[#F59E0B] dark:border-[#FCD34D] group-hover:scale-105 transition-transform">
                   {user.full_name.charAt(0).toUpperCase()}
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-bold truncate text-white group-hover:text-[#FCD34D] transition-colors">{user.full_name}</h4>
-                <span className="text-xs text-[#FCD34D] capitalize font-semibold">{user.role}</span>
+                <h4 className="text-sm font-bold truncate text-slate-900 dark:text-white group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D] transition-colors">{user.full_name}</h4>
+                <span className="text-xs text-[#D97706] dark:text-[#FCD34D] capitalize font-semibold">{user.role}</span>
               </div>
             </button>
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-white/5 transition-colors"
+              className="p-2 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               title="Chiqish"
             >
               <LogoutIcon style={{ fontSize: 20 }} />
@@ -162,21 +163,21 @@ export default function DashboardLayout() {
         </div>
       </aside>
 
-      {/* Sidebar - Mobile Toggle drawer */}
+      {/* Sidebar - Mobile Toggle Drawer */}
       {sidebarOpen && (
         <div className="md:hidden fixed inset-0 z-40 flex">
           {/* Backdrop */}
-          <div className="fixed inset-0 bg-black/85 backdrop-blur-md" onClick={() => setSidebarOpen(false)} />
+          <div className="fixed inset-0 bg-slate-900/60 dark:bg-black/85 backdrop-blur-md" onClick={() => setSidebarOpen(false)} />
           
-          <aside className="relative flex flex-col w-full max-w-xs bg-[#16161E] border-r border-amber-500/15 p-6 z-50 shadow-2xl">
-            <div className="flex items-center justify-between pb-6 border-b border-amber-500/15">
+          <aside className="relative flex flex-col w-full max-w-xs bg-white dark:bg-[#16161E] border-r border-amber-500/20 dark:border-amber-500/15 p-6 z-50 shadow-2xl">
+            <div className="flex items-center justify-between pb-6 border-b border-amber-500/20 dark:border-amber-500/15">
               <div className="flex items-center space-x-3">
-                <div className="h-9 w-9 rounded-xl gold-gradient flex items-center justify-center text-[#0B0B0E]">
+                <div className="h-9 w-9 rounded-xl gold-gradient flex items-center justify-center text-white dark:text-[#0B0B0E]">
                   <AccountBalanceWalletIcon style={{ fontSize: 20 }} />
                 </div>
                 <span className="font-extrabold text-lg gold-gradient-text">Control Life</span>
               </div>
-              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-[#FCD34D]">
+              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-[#D97706]">
                 <CloseIcon style={{ fontSize: 22 }} />
               </button>
             </div>
@@ -194,8 +195,8 @@ export default function DashboardLayout() {
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-bold ${
                         isActive
-                          ? 'bg-gradient-to-r from-[#FCD34D] to-[#F59E0B] text-[#0B0B0E] font-black'
-                          : 'text-slate-400 hover:bg-white/5 hover:text-[#FCD34D]'
+                          ? 'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white dark:from-[#FCD34D] dark:to-[#F59E0B] dark:text-[#0B0B0E] font-black'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-[#D97706]'
                       }`}
                     >
                       <IconComponent style={{ fontSize: 20 }} />
@@ -205,22 +206,22 @@ export default function DashboardLayout() {
                 })}
             </nav>
 
-            <div className="pt-4 border-t border-amber-500/15 flex items-center justify-between">
+            <div className="pt-4 border-t border-amber-500/20 dark:border-amber-500/15 flex items-center justify-between">
               <button
                 onClick={() => { setSidebarOpen(false); setProfileModalOpen(true); }}
                 className="flex items-center space-x-3 text-left"
               >
-                <div className="h-9 w-9 rounded-full gold-gradient text-[#0B0B0E] flex items-center justify-center font-extrabold text-sm">
+                <div className="h-9 w-9 rounded-full gold-gradient text-white dark:text-[#0B0B0E] flex items-center justify-center font-extrabold text-sm">
                   {user.full_name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white leading-none">{user.full_name}</h4>
-                  <span className="text-xs text-[#FCD34D] capitalize font-semibold">{user.role}</span>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-none">{user.full_name}</h4>
+                  <span className="text-xs text-[#D97706] dark:text-[#FCD34D] capitalize font-semibold">{user.role}</span>
                 </div>
               </button>
               <button
                 onClick={handleLogout}
-                className="p-2 rounded-lg text-slate-400 hover:text-rose-400"
+                className="p-2 rounded-lg text-slate-400 hover:text-rose-500"
               >
                 <LogoutIcon style={{ fontSize: 22 }} />
               </button>
@@ -230,94 +231,153 @@ export default function DashboardLayout() {
       )}
 
       {/* Main Container */}
-      <div className="flex-1 md:pl-64 flex flex-col min-w-0">
+      <div className="flex-1 md:pl-64 flex flex-col min-w-0 pb-20 md:pb-8">
         
         {/* Navbar Header */}
-        <header className="sticky top-0 bg-[#16161E]/85 backdrop-blur-xl border-b border-amber-500/15 h-16 flex items-center justify-between px-6 z-10">
+        <header className="sticky top-0 bg-white/90 dark:bg-[#16161E]/85 backdrop-blur-xl border-b border-amber-500/20 dark:border-amber-500/15 h-16 flex items-center justify-between px-4 sm:px-6 z-10 shadow-sm">
           <div className="flex items-center">
             {/* Burger menu for Mobile */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-2 rounded-lg text-slate-400 hover:bg-white/5 mr-3 hover:text-[#FCD34D]"
+              className="md:hidden p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 mr-2 hover:text-[#D97706]"
             >
               <MenuIcon style={{ fontSize: 24 }} />
             </button>
             
             {/* Page Title */}
-            <h2 className="text-lg font-black tracking-tight font-display text-white capitalize">
+            <h2 className="text-base sm:text-lg font-black tracking-tight font-display text-slate-900 dark:text-white capitalize">
               {activeItem ? activeItem.name : 'Boshqaruv paneli'}
             </h2>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl text-slate-400 hover:text-[#FCD34D] bg-[#0B0B0E]/60 hover:bg-white/5 border border-amber-500/15 transition-all duration-150"
+              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-[#D97706] dark:hover:text-[#FCD34D] bg-slate-100 dark:bg-[#0B0B0E]/60 hover:bg-slate-200 dark:hover:bg-white/5 border border-amber-500/20 dark:border-amber-500/15 transition-all duration-150"
               title={theme === 'dark' ? 'Yorug\' rejimga o\'tish' : 'Qorong\'u rejimga o\'tish'}
             >
               {theme === 'dark' ? <SunIcon style={{ fontSize: 20 }} /> : <MoonIcon style={{ fontSize: 20 }} />}
             </button>
 
-            <div className="h-6 w-px bg-amber-500/15 hidden sm:block" />
+            <div className="h-6 w-px bg-amber-500/20 dark:bg-amber-500/15 hidden sm:block" />
 
             {/* Profile trigger */}
             <button
               onClick={() => setProfileModalOpen(true)}
-              className="items-center space-x-3 hidden sm:flex hover:bg-white/5 p-1.5 rounded-xl border border-amber-500/15 transition-all"
+              className="items-center space-x-3 hidden sm:flex hover:bg-slate-100 dark:hover:bg-white/5 p-1.5 rounded-xl border border-amber-500/20 dark:border-amber-500/15 transition-all"
               title="Profil Sozlamalari"
             >
               {user.avatar ? (
                 <img src={user.avatar} alt={user.full_name} className="h-8 w-8 rounded-full border border-[#F59E0B] object-cover" />
               ) : (
-                <div className="h-8 w-8 rounded-full gold-gradient text-[#0B0B0E] flex items-center justify-center text-xs font-black border border-[#FCD34D]">
+                <div className="h-8 w-8 rounded-full gold-gradient text-white dark:text-[#0B0B0E] flex items-center justify-center text-xs font-black border border-[#FCD34D]">
                   {user.full_name.charAt(0).toUpperCase()}
                 </div>
               )}
-              <span className="text-sm font-bold text-white pr-1">{user.full_name.split(' ')[0]}</span>
-              <SettingsIcon style={{ fontSize: 16 }} className="text-[#FCD34D]" />
+              <span className="text-sm font-bold text-slate-900 dark:text-white pr-1">{user.full_name.split(' ')[0]}</span>
+              <SettingsIcon style={{ fontSize: 16 }} className="text-[#D97706] dark:text-[#FCD34D]" />
             </button>
           </div>
         </header>
 
         {/* Content body */}
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto">
-          <div className="max-w-7xl mx-auto space-y-8 animate-[fadeIn_0.2s_ease-out]">
+        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
+          <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 animate-[fadeIn_0.2s_ease-out]">
             <Outlet />
           </div>
         </main>
 
       </div>
 
+      {/* Fixed Mobile Bottom Navigation Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-[#16161E]/95 backdrop-blur-xl border-t border-amber-500/20 px-2 py-2 flex justify-around items-center shadow-2xl">
+        <Link
+          to="/dashboard"
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            location.pathname === '/dashboard'
+              ? 'text-[#D97706] dark:text-[#FCD34D] font-black'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <DashboardIcon style={{ fontSize: 22 }} />
+          <span className="text-[10px] mt-0.5 font-bold">Bosh</span>
+        </Link>
+
+        <Link
+          to="/transactions"
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            location.pathname === '/transactions'
+              ? 'text-[#D97706] dark:text-[#FCD34D] font-black'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <SwapHorizIcon style={{ fontSize: 22 }} />
+          <span className="text-[10px] mt-0.5 font-bold">Tranzaksiya</span>
+        </Link>
+
+        <Link
+          to="/categories"
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            location.pathname === '/categories'
+              ? 'text-[#D97706] dark:text-[#FCD34D] font-black'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <CategoryIcon style={{ fontSize: 22 }} />
+          <span className="text-[10px] mt-0.5 font-bold">Toifa</span>
+        </Link>
+
+        <Link
+          to="/recurring"
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            location.pathname === '/recurring'
+              ? 'text-[#D97706] dark:text-[#FCD34D] font-black'
+              : 'text-slate-500 dark:text-slate-400'
+          }`}
+        >
+          <UpdateIcon style={{ fontSize: 22 }} />
+          <span className="text-[10px] mt-0.5 font-bold">Davriy</span>
+        </Link>
+
+        <button
+          onClick={() => setProfileModalOpen(true)}
+          className="flex flex-col items-center justify-center py-1 px-3 rounded-xl text-slate-500 dark:text-slate-400 hover:text-[#D97706]"
+        >
+          <PersonIcon style={{ fontSize: 22 }} />
+          <span className="text-[10px] mt-0.5 font-bold">Profil</span>
+        </button>
+      </div>
+
       {/* Modal: Edit User Profile */}
       {profileModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-black text-white">Profil Sozlamalari ⚙️</h3>
-              <button onClick={() => setProfileModalOpen(false)} className="text-slate-400 hover:text-white">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">Profil Sozlamalari ⚙️</h3>
+              <button onClick={() => setProfileModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
                 <CloseIcon style={{ fontSize: 20 }} />
               </button>
             </div>
 
             <form onSubmit={handleSaveProfile} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">To'liq Ismingiz</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">To'liq Ismingiz</label>
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Asosiy Valyuta</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Asosiy Valyuta</label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                 >
                   <option value="UZS">UZS (so'm)</option>
                   <option value="USD">USD ($)</option>
@@ -327,13 +387,13 @@ export default function DashboardLayout() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Avatar Rasm URL Havolasi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Avatar Rasm URL Havolasi</label>
                 <input
                   type="text"
                   placeholder="https://..."
                   value={avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-3 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                 />
               </div>
 
@@ -341,13 +401,13 @@ export default function DashboardLayout() {
                 <button
                   type="button"
                   onClick={() => setProfileModalOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-3 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-3 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Saqlash
                 </button>

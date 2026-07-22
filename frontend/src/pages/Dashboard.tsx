@@ -17,10 +17,6 @@ import {
   Warning as WarningIcon,
   ChevronRight as ChevronRightIcon,
   FolderOpen as FolderOpenIcon,
-  Coffee as LocalCoffeeIcon,
-  Restaurant as RestaurantIcon,
-  LocalTaxi as LocalTaxiIcon,
-  ShoppingCart as ShoppingCartIcon,
   Lightbulb as LightbulbIcon,
   CheckCircle as CheckCircleIcon,
   Add as AddIcon,
@@ -215,14 +211,14 @@ export default function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
         <div className="h-10 w-10 border-4 border-[#F59E0B] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-sm text-slate-400">Ma'lumotlar yuklanmoqda...</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Ma'lumotlar yuklanmoqda...</p>
       </div>
     );
   }
 
   if (dashError) {
     return (
-      <div className="p-6 text-center bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20">
+      <div className="p-6 text-center bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-2xl border border-rose-500/20">
         Xatolik yuz berdi: {(dashError as any).message || 'Serverga ulanib bo\'lmadi'}
       </div>
     );
@@ -396,9 +392,9 @@ export default function Dashboard() {
 
   const healthScore = computeHealthScore();
   const getHealthBadge = (s: number) => {
-    if (s >= 80) return { label: "A'lo (A+)", color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
-    if (s >= 50) return { label: "Barqaror (B)", color: 'text-[#FCD34D] bg-[#F59E0B]/10 border-amber-500/30' };
-    return { label: "Ogoh bo'ling (C)", color: 'text-rose-400 bg-rose-500/10 border-rose-500/30' };
+    if (s >= 80) return { label: "A'lo (A+)", color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/30' };
+    if (s >= 50) return { label: "Barqaror (B)", color: 'text-[#D97706] dark:text-[#FCD34D] bg-[#F59E0B]/10 border-amber-500/30' };
+    return { label: "Ogoh bo'ling (C)", color: 'text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/30' };
   };
 
   const healthBadge = getHealthBadge(healthScore);
@@ -465,15 +461,15 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Upper header section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 backdrop-blur-sm shadow-xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#16161E] p-6 rounded-2xl border border-amber-500/20 backdrop-blur-sm shadow-md dark:shadow-xl">
         <div>
-          <h1 className="text-2xl font-black tracking-tight font-display text-white">Xush kelibsiz, {user?.full_name}! 👋</h1>
-          <p className="text-sm text-slate-400">Moliyaviy ko'rsatkichlaringiz va statistikangiz rejasi.</p>
+          <h1 className="text-2xl font-black tracking-tight font-display text-slate-900 dark:text-white">Xush kelibsiz, {user?.full_name}! 👋</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Moliyaviy ko'rsatkichlaringiz va statistikangiz rejasi.</p>
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <button
             onClick={() => window.print()}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-[#0B0B0E] text-[#FCD34D] text-sm font-bold hover:bg-white/5 transition-colors no-print"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-[#D97706] dark:text-[#FCD34D] text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
             title="PDF hisoboti sifatida saqlash va chop etish"
           >
             <PrintIcon style={{ fontSize: 20 }} />
@@ -481,14 +477,14 @@ export default function Dashboard() {
           </button>
           <button
             onClick={() => setBudgetModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-[#0B0B0E] text-slate-200 text-sm font-bold hover:bg-white/5 transition-colors no-print"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-slate-800 dark:text-slate-200 text-sm font-bold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors no-print"
           >
-            <SavingsIcon style={{ fontSize: 20 }} className="text-[#FCD34D]" />
+            <SavingsIcon style={{ fontSize: 20 }} className="text-[#D97706] dark:text-[#FCD34D]" />
             Byudjet
           </button>
           <button
             onClick={() => setTxModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gold-gradient text-[#0B0B0E] text-sm font-extrabold shadow-lg shadow-amber-500/20 transition-all no-print"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold shadow-md shadow-amber-500/20 transition-all no-print"
           >
             <AddCircleIcon style={{ fontSize: 20 }} />
             Tranzaksiya qo'shish
@@ -499,39 +495,39 @@ export default function Dashboard() {
       {/* Grid of Key stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1: Balance */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 stripe-card shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
-          <div className="h-12 w-12 rounded-xl bg-[#F59E0B]/15 text-[#FCD34D] flex items-center justify-center flex-shrink-0">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 stripe-card shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
+          <div className="h-12 w-12 rounded-xl bg-[#F59E0B]/15 text-[#D97706] dark:text-[#FCD34D] flex items-center justify-center flex-shrink-0">
             <AccountBalanceWalletIcon style={{ fontSize: 28 }} className="animate-gold-pulse" />
           </div>
           <div>
-            <span className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider">Umumiy Balans</span>
-            <h2 className="text-2xl font-black font-display mt-1 text-white">
+            <span className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider">Umumiy Balans</span>
+            <h2 className="text-2xl font-black font-display mt-1 text-slate-900 dark:text-white">
               {formatCurrency(summary.balance)}
             </h2>
           </div>
         </div>
 
         {/* Card 2: Income */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
-          <div className="h-12 w-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
+          <div className="h-12 w-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
             <TrendingUpIcon style={{ fontSize: 28 }} />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Jami Daromad</span>
-            <h2 className="text-2xl font-black font-display mt-1 text-white">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jami Daromad</span>
+            <h2 className="text-2xl font-black font-display mt-1 text-slate-900 dark:text-white">
               {formatCurrency(summary.totalIncome)}
             </h2>
           </div>
         </div>
 
         {/* Card 3: Expense */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
-          <div className="h-12 w-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center flex-shrink-0">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 shadow-sm flex items-center space-x-5 hover:-translate-y-1 transition-transform">
+          <div className="h-12 w-12 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
             <TrendingDownIcon style={{ fontSize: 28 }} />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Jami Xarajat</span>
-            <h2 className="text-2xl font-black font-display mt-1 text-white">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Jami Xarajat</span>
+            <h2 className="text-2xl font-black font-display mt-1 text-slate-900 dark:text-white">
               {formatCurrency(summary.totalExpense)}
             </h2>
           </div>
@@ -541,11 +537,11 @@ export default function Dashboard() {
       {/* Financial Health & 1-Click Quick Presets Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Financial Health Card */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 flex flex-col justify-between space-y-4">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 flex flex-col justify-between space-y-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <SpeedIcon style={{ fontSize: 22 }} className="text-[#FCD34D] animate-gold-pulse" />
-              <h3 className="font-bold text-white">Moliyaviy Salomatlik Indeksi</h3>
+              <SpeedIcon style={{ fontSize: 22 }} className="text-[#D97706] dark:text-[#FCD34D] animate-gold-pulse" />
+              <h3 className="font-bold text-slate-900 dark:text-white">Moliyaviy Salomatlik Indeksi</h3>
             </div>
             <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${healthBadge.color}`}>
               {healthBadge.label}
@@ -554,10 +550,10 @@ export default function Dashboard() {
 
           <div className="space-y-2">
             <div className="flex justify-between items-end">
-              <span className="text-3xl font-black text-white">{healthScore} <span className="text-sm font-normal text-slate-400">/ 100 ball</span></span>
-              <span className="text-xs text-slate-400">Tejamkorlik va Byudjet</span>
+              <span className="text-3xl font-black text-slate-900 dark:text-white">{healthScore} <span className="text-sm font-normal text-slate-500 dark:text-slate-400">/ 100 ball</span></span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Tejamkorlik va Byudjet</span>
             </div>
-            <div className="w-full bg-[#0B0B0E] rounded-full h-3 overflow-hidden border border-amber-500/20">
+            <div className="w-full bg-slate-100 dark:bg-[#0B0B0E] rounded-full h-3 overflow-hidden border border-amber-500/20">
               <div 
                 className="h-full gold-gradient rounded-full transition-all duration-500 gold-glow" 
                 style={{ width: `${healthScore}%` }}
@@ -565,62 +561,50 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
             Sizning oylik xarajatingiz va byudjet intizomingiz asosida hisoblangan reyting.
           </p>
         </div>
 
         {/* 1-Click Quick Expense Presets */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-4">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-4 shadow-sm">
           <div className="flex items-center space-x-2">
-            <FlashOnIcon style={{ fontSize: 22 }} className="text-[#FCD34D] animate-gold-pulse" />
-            <h3 className="font-bold text-white">1-Click Tezkor Xarajat Kiritish</h3>
+            <FlashOnIcon style={{ fontSize: 22 }} className="text-[#D97706] dark:text-[#FCD34D] animate-gold-pulse" />
+            <h3 className="font-bold text-slate-900 dark:text-white">1-Click Tezkor Xarajat Kiritish</h3>
           </div>
-          <p className="text-xs text-slate-400">Bir bosishda tayyor shablon orqali tranzaksiya yarating:</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Bir bosishda tayyor shablon orqali tranzaksiya yarating:</p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
             <button
               onClick={() => handleQuickPreset('Kofe ☕', '15000')}
-              className="p-3.5 rounded-xl bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-2 group"
+              className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-1.5 group"
             >
-              <LocalCoffeeIcon style={{ fontSize: 24 }} className="text-[#FCD34D] animate-coffee-steam" />
-              <div>
-                <div className="text-xs font-bold text-white">Kofe</div>
-                <div className="text-[11px] text-[#FCD34D] font-semibold">15,000 UZS</div>
-              </div>
+              <div className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D] transition-colors">Kofe ☕</div>
+              <div className="text-xs text-[#D97706] dark:text-[#FCD34D] font-bold">15,000 UZS</div>
             </button>
 
             <button
               onClick={() => handleQuickPreset('Tushlik 🍱', '40000')}
-              className="p-3.5 rounded-xl bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-2 group"
+              className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-1.5 group"
             >
-              <RestaurantIcon style={{ fontSize: 24 }} className="text-[#FCD34D] animate-lunch-bounce" />
-              <div>
-                <div className="text-xs font-bold text-white">Tushlik</div>
-                <div className="text-[11px] text-[#FCD34D] font-semibold">40,000 UZS</div>
-              </div>
+              <div className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D] transition-colors">Tushlik 🍱</div>
+              <div className="text-xs text-[#D97706] dark:text-[#FCD34D] font-bold">40,000 UZS</div>
             </button>
 
             <button
               onClick={() => handleQuickPreset('Taksi 🚖', '25000')}
-              className="p-3.5 rounded-xl bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-2 group"
+              className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-1.5 group"
             >
-              <LocalTaxiIcon style={{ fontSize: 24 }} className="text-[#FCD34D] animate-taxi-drive" />
-              <div>
-                <div className="text-xs font-bold text-white">Taksi</div>
-                <div className="text-[11px] text-[#FCD34D] font-semibold">25,000 UZS</div>
-              </div>
+              <div className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D] transition-colors">Taksi 🚖</div>
+              <div className="text-xs text-[#D97706] dark:text-[#FCD34D] font-bold">25,000 UZS</div>
             </button>
 
             <button
               onClick={() => handleQuickPreset('Oziq-ovqat 🛒', '100000')}
-              className="p-3.5 rounded-xl bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-2 group"
+              className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 hover:border-[#F59E0B] hover:bg-slate-100 dark:hover:bg-white/5 transition-all text-left flex flex-col justify-between space-y-1.5 group"
             >
-              <ShoppingCartIcon style={{ fontSize: 24 }} className="text-[#FCD34D] animate-cart-pulse" />
-              <div>
-                <div className="text-xs font-bold text-white">Oziq-ovqat</div>
-                <div className="text-[11px] text-[#FCD34D] font-semibold">100,000 UZS</div>
-              </div>
+              <div className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#D97706] dark:group-hover:text-[#FCD34D] transition-colors">Oziq-ovqat 🛒</div>
+              <div className="text-xs text-[#D97706] dark:text-[#FCD34D] font-bold">100,000 UZS</div>
             </button>
           </div>
         </div>
@@ -629,36 +613,36 @@ export default function Dashboard() {
       {/* Smart Insights & Savings Goals Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Smart AI Insights */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-4">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-4 shadow-sm">
           <div className="flex items-center space-x-2">
-            <LightbulbIcon style={{ fontSize: 24 }} className="text-[#FCD34D]" />
-            <h3 className="font-bold text-white">Smart Insights 💡</h3>
+            <LightbulbIcon style={{ fontSize: 24 }} className="text-[#D97706] dark:text-[#FCD34D]" />
+            <h3 className="font-bold text-slate-900 dark:text-white">Smart Insights 💡</h3>
           </div>
-          <p className="text-xs text-slate-400">Moliyaviy odatlaringiz bo'yicha aqlli maslahatlar:</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Moliyaviy odatlaringiz bo'yicha aqlli maslahatlar:</p>
 
           <div className="space-y-3">
             {smartInsights.map((insight, idx) => (
-              <div key={idx} className="p-3.5 rounded-xl bg-[#0B0B0E] border border-amber-500/15 space-y-1">
-                <div className="text-xs font-bold text-[#FCD34D] flex items-center gap-1.5">
-                  <CheckCircleIcon style={{ fontSize: 16 }} className="text-emerald-400" />
+              <div key={idx} className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 dark:border-amber-500/15 space-y-1">
+                <div className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] flex items-center gap-1.5">
+                  <CheckCircleIcon style={{ fontSize: 16 }} className="text-emerald-600 dark:text-emerald-400" />
                   {insight.title}
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">{insight.desc}</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{insight.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Savings Goals Tracker */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-6">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-[#FCD34D]">Jamg'arma Maqsadlari Tracker 🎯</h3>
-              <p className="text-xs text-slate-400">Orzularingiz uchun jamg'arilayotgan mablag'lar</p>
+              <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Jamg'arma Maqsadlari Tracker 🎯</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Orzularingiz uchun jamg'arilayotgan mablag'lar</p>
             </div>
             <button
               onClick={() => setGoalModalOpen(true)}
-              className="px-3 py-1.5 rounded-xl bg-[#F59E0B]/15 hover:bg-[#F59E0B]/25 text-[#FCD34D] text-xs font-bold border border-amber-500/30 transition-all flex items-center gap-1"
+              className="px-3 py-1.5 rounded-xl bg-[#F59E0B]/15 hover:bg-[#F59E0B]/25 text-[#D97706] dark:text-[#FCD34D] text-xs font-bold border border-amber-500/30 transition-all flex items-center gap-1"
             >
               <AddIcon style={{ fontSize: 16 }} />
               Yangi Maqsad
@@ -669,25 +653,25 @@ export default function Dashboard() {
             {goals.map((g) => {
               const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
               return (
-                <div key={g.id} className="p-4 rounded-xl bg-[#0B0B0E] border border-amber-500/20 space-y-3 relative group">
+                <div key={g.id} className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B0B0E] border border-amber-500/20 space-y-3 relative group">
                   <div className="flex items-start justify-between">
                     <div>
-                      <h4 className="text-sm font-bold text-white">{g.title}</h4>
-                      <span className="text-xs text-slate-400 font-medium">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white">{g.title}</h4>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                         {formatCurrency(g.currentAmount)} / {formatCurrency(g.targetAmount)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => handleOpenEditGoal(g)}
-                        className="p-1 rounded text-slate-400 hover:text-[#FCD34D]"
+                        className="p-1 rounded text-slate-400 hover:text-[#D97706] dark:hover:text-[#FCD34D]"
                         title="Maqsadni tahrirlash"
                       >
                         <EditIcon style={{ fontSize: 16 }} />
                       </button>
                       <button
                         onClick={() => handleDeleteGoal(g.id)}
-                        className="p-1 rounded text-slate-400 hover:text-rose-400"
+                        className="p-1 rounded text-slate-400 hover:text-rose-500"
                         title="O'chirish"
                       >
                         <DeleteIcon style={{ fontSize: 16 }} />
@@ -697,18 +681,18 @@ export default function Dashboard() {
 
                   {/* Progress Bar */}
                   <div className="space-y-1">
-                    <div className="flex justify-between text-[11px] font-bold text-[#FCD34D]">
+                    <div className="flex justify-between text-[11px] font-bold text-[#D97706] dark:text-[#FCD34D]">
                       <span>Ershildi:</span>
                       <span>{pct}%</span>
                     </div>
-                    <div className="w-full bg-black/80 rounded-full h-2.5 overflow-hidden border border-amber-500/20">
+                    <div className="w-full bg-slate-200 dark:bg-black/80 rounded-full h-2.5 overflow-hidden border border-amber-500/20">
                       <div className="h-full gold-gradient rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
 
                   <button
                     onClick={() => { setSelectedGoal(g); setDepositModalOpen(true); }}
-                    className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-[#FCD34D] text-xs font-bold border border-amber-500/20 transition-all"
+                    className="w-full py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-[#D97706] dark:text-[#FCD34D] text-xs font-bold border border-amber-500/20 transition-all"
                   >
                     + Pul Qo'shish
                   </button>
@@ -723,23 +707,23 @@ export default function Dashboard() {
       {budgetInfo ? (
         <div className={`p-6 rounded-2xl border transition-colors ${
           budgetInfo.isExceeded 
-            ? 'bg-rose-500/5 border-rose-500/20 text-rose-400' 
-            : 'bg-[#16161E] border-amber-500/20'
+            ? 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400' 
+            : 'bg-white dark:bg-[#16161E] border-amber-500/20 shadow-sm'
         }`}>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <div className="flex items-center space-x-2">
-              <CalendarMonthIcon style={{ fontSize: 22 }} className="text-[#FCD34D]" />
-              <h3 className="font-bold text-white">
+              <CalendarMonthIcon style={{ fontSize: 22 }} className="text-[#D97706] dark:text-[#FCD34D]" />
+              <h3 className="font-bold text-slate-900 dark:text-white">
                 Ushbu oy uchun byudjet holati (Taqvim bo'yicha)
               </h3>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="text-sm font-bold text-[#FCD34D]">
+              <div className="text-sm font-bold text-[#D97706] dark:text-[#FCD34D]">
                 {formatCurrency(budgetInfo.totalExpenses)} / {formatCurrency(budgetInfo.budgetAmount)} ({budgetInfo.percentageUsed}%)
               </div>
               <button
                 onClick={handleDeleteBudget}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-white/5 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
                 title="Byudjet limitini o'chirish"
               >
                 <DeleteIcon style={{ fontSize: 18 }} />
@@ -748,7 +732,7 @@ export default function Dashboard() {
           </div>
           
           {/* Progress Bar */}
-          <div className="w-full bg-[#0B0B0E] rounded-full h-3.5 overflow-hidden border border-amber-500/10">
+          <div className="w-full bg-slate-100 dark:bg-[#0B0B0E] rounded-full h-3.5 overflow-hidden border border-amber-500/20">
             <div
               className={`h-full rounded-full transition-all duration-300 ${
                 budgetInfo.isExceeded ? 'bg-rose-500 animate-pulse' : 'gold-gradient'
@@ -758,21 +742,21 @@ export default function Dashboard() {
           </div>
 
           {budgetInfo.isExceeded && (
-            <div className="flex items-center mt-3 text-xs text-rose-400 font-semibold gap-1.5 animate-bounce">
+            <div className="flex items-center mt-3 text-xs text-rose-600 dark:text-rose-400 font-semibold gap-1.5 animate-bounce">
               <WarningIcon style={{ fontSize: 18 }} />
               Diqqat! Oylik xarajat limitidan oshib ketdingiz!
             </div>
           )}
         </div>
       ) : (
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
           <div className="space-y-1">
-            <h3 className="font-bold text-white">Ushbu oy uchun xarajat limiti belgilanmagan</h3>
-            <p className="text-xs text-slate-400">Byudjet rejalashtirish orqali oylik xarajatlaringizni maqbullashtiring.</p>
+            <h3 className="font-bold text-slate-900 dark:text-white">Ushbu oy uchun xarajat limiti belgilanmagan</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Byudjet rejalashtirish orqali oylik xarajatlaringizni maqbullashtiring.</p>
           </div>
           <button
             onClick={() => setBudgetModalOpen(true)}
-            className="px-4 py-2 gold-gradient text-[#0B0B0E] rounded-xl text-xs font-black transition-colors shadow-md shadow-amber-500/20"
+            className="px-4 py-2 gold-gradient text-white dark:text-[#0B0B0E] rounded-xl text-xs font-black transition-colors shadow-md shadow-amber-500/20"
           >
             Byudjet O'rnatish
           </button>
@@ -782,13 +766,13 @@ export default function Dashboard() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Trend Area Chart */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-6">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-[#FCD34D]">Oylik Dinamika (Daromad va Xarajatlar)</h3>
-              <p className="text-xs text-slate-400">Oxirgi oylar bo'yicha tahlil</p>
+              <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Oylik Dinamika (Daromad va Xarajatlar)</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Oxirgi oylar bo'yicha tahlil</p>
             </div>
-            <ShowChartIcon style={{ fontSize: 24 }} className="text-[#FCD34D]" />
+            <ShowChartIcon style={{ fontSize: 24 }} className="text-[#D97706] dark:text-[#FCD34D]" />
           </div>
 
           <div className="h-72 w-full">
@@ -804,15 +788,15 @@ export default function Dashboard() {
                     <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
-                <XAxis dataKey="month" stroke="#71717a" fontSize={12} tickLine={false} />
-                <YAxis stroke="#71717a" fontSize={12} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#0B0B0E', 
-                    borderColor: 'rgba(251, 191, 36, 0.3)',
+                    backgroundColor: '#ffffff', 
+                    borderColor: 'rgba(245, 158, 11, 0.3)',
                     borderRadius: '12px',
-                    color: '#fff'
+                    color: '#0f172a'
                   }} 
                 />
                 <Area type="monotone" dataKey="income" name="Daromad" stroke="#10B981" strokeWidth={2.5} fillOpacity={1} fill="url(#incomeGrad)" />
@@ -823,13 +807,13 @@ export default function Dashboard() {
         </div>
 
         {/* Category Distribution Pie Chart */}
-        <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 flex flex-col justify-between space-y-4">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 flex flex-col justify-between space-y-4 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-[#FCD34D]">Kategoriyalar Ulushi</h3>
-              <p className="text-xs text-slate-400">Xarajatlar strukturasi</p>
+              <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Kategoriyalar Ulushi</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Xarajatlar strukturasi</p>
             </div>
-            <DonutSmallIcon style={{ fontSize: 24 }} className="text-[#FCD34D]" />
+            <DonutSmallIcon style={{ fontSize: 24 }} className="text-[#D97706] dark:text-[#FCD34D]" />
           </div>
 
           {catDist && catDist.length > 0 ? (
@@ -847,15 +831,15 @@ export default function Dashboard() {
                     nameKey="category_name"
                   >
                     {catDist.map((_: any, index: number) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#0B0B0E" strokeWidth={2} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#ffffff" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#0B0B0E', 
-                      borderColor: 'rgba(251, 191, 36, 0.3)',
+                      backgroundColor: '#ffffff', 
+                      borderColor: 'rgba(245, 158, 11, 0.3)',
                       borderRadius: '10px',
-                      color: '#fff'
+                      color: '#0f172a'
                     }}
                   />
                 </PieChart>
@@ -863,7 +847,7 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-400">
-              <FolderOpenIcon style={{ fontSize: 40 }} className="mb-2 text-slate-600" />
+              <FolderOpenIcon style={{ fontSize: 40 }} className="mb-2 text-slate-400" />
               <p className="text-xs">Ushbu oy uchun xarajatlar yo'q</p>
             </div>
           )}
@@ -874,9 +858,9 @@ export default function Dashboard() {
               <div key={idx} className="flex items-center justify-between text-xs">
                 <div className="flex items-center space-x-2">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                  <span className="text-slate-300 font-medium">{item.category_name}</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">{item.category_name}</span>
                 </div>
-                <span className="font-bold text-white">{formatCurrency(item.total)}</span>
+                <span className="font-bold text-slate-900 dark:text-white">{formatCurrency(item.total)}</span>
               </div>
             ))}
           </div>
@@ -884,15 +868,15 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Transactions Section */}
-      <div className="p-6 rounded-2xl bg-[#16161E] border border-amber-500/20 space-y-6">
+      <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-6 shadow-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-[#FCD34D]">Oxirgi Tranzaksiyalar</h3>
-            <p className="text-xs text-slate-400">Oxirgi amalga oshirilgan 5 ta tranzaksiya</p>
+            <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Oxirgi Tranzaksiyalar</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Oxirgi amalga oshirilgan 5 ta tranzaksiya</p>
           </div>
           <Link
             to="/transactions"
-            className="flex items-center text-xs font-bold text-[#FCD34D] hover:text-[#F59E0B] underline gap-0.5"
+            className="flex items-center text-xs font-bold text-[#D97706] dark:text-[#FCD34D] hover:underline gap-0.5"
           >
             Barchasini ko'rish <ChevronRightIcon style={{ fontSize: 16 }} />
           </Link>
@@ -901,7 +885,7 @@ export default function Dashboard() {
         {recent && recent.length > 0 ? (
           <div className="divide-y divide-amber-500/10">
             {recent.map((tx: any) => (
-              <div key={tx.id} className="py-3.5 flex items-center justify-between hover:bg-white/5 px-3 rounded-xl transition-colors group">
+              <div key={tx.id} className="py-3.5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 px-3 rounded-xl transition-colors group">
                 <div className="flex items-center space-x-3.5">
                   <div 
                     className="h-10 w-10 rounded-xl flex items-center justify-center font-bold text-white text-sm"
@@ -910,25 +894,25 @@ export default function Dashboard() {
                     {tx.category_name ? tx.category_name.charAt(0).toUpperCase() : 'T'}
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white">{tx.title}</h4>
-                    <span className="text-xs text-slate-400">{tx.category_name} • {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}</span>
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">{tx.title}</h4>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{tx.category_name} • {new Date(tx.transaction_date).toLocaleDateString('uz-UZ')}</span>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <div className={`text-sm font-black ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  <div className={`text-sm font-black ${tx.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
                     {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                   </div>
                   <div className="flex items-center space-x-1 opacity-80 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleOpenEditTx(tx)}
-                      className="p-1 rounded text-slate-400 hover:text-[#FCD34D]"
+                      className="p-1 rounded text-slate-400 hover:text-[#D97706] dark:hover:text-[#FCD34D]"
                       title="Tahrirlash"
                     >
                       <EditIcon style={{ fontSize: 18 }} />
                     </button>
                     <button
                       onClick={() => handleDeleteTx(tx.id)}
-                      className="p-1 rounded text-slate-400 hover:text-rose-400"
+                      className="p-1 rounded text-slate-400 hover:text-rose-500"
                       title="O'chirish"
                     >
                       <DeleteIcon style={{ fontSize: 18 }} />
@@ -939,7 +923,7 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <div className="py-8 text-center text-slate-400 text-sm">
+          <div className="py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
             Hozircha hech qanday tranzaksiya mavjud emas.
           </div>
         )}
@@ -947,41 +931,41 @@ export default function Dashboard() {
 
       {/* Modal: Create Transaction */}
       {txModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Yangi Tranzaksiya Yaratish 🟡</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Yangi Tranzaksiya Yaratish 🟡</h3>
 
             <form onSubmit={handleTxSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   placeholder="Masalan: Tushlik yoki Ish haqi"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     placeholder="100000"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -990,11 +974,11 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -1009,12 +993,12 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1023,14 +1007,14 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setTxModalOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={createTxMutation.isPending}
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Saqlash
                 </button>
@@ -1042,39 +1026,39 @@ export default function Dashboard() {
 
       {/* Modal: Edit Transaction */}
       {editTxModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Tranzaksiyani Tahrirlash 🟡</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Tranzaksiyani Tahrirlash 🟡</h3>
 
             <form onSubmit={handleEditTxSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Nomi</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Summa ({currencySymbol})</label>
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                     required
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-[#FCD34D] uppercase">Turi</label>
+                  <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Turi</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as 'income' | 'expense')}
-                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                    className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   >
                     <option value="expense">Xarajat (-)</option>
                     <option value="income">Daromad (+)</option>
@@ -1083,11 +1067,11 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Kategoriya</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Kategoriya</label>
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 >
                   <option value="">Kategoriyani tanlang</option>
@@ -1102,12 +1086,12 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Sana</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Sana</label>
                 <input
                   type="date"
                   value={txDate}
                   onChange={(e) => setTxDate(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1116,14 +1100,14 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setEditTxModalOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={updateTxMutation.isPending}
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Yangilash
                 </button>
@@ -1135,19 +1119,19 @@ export default function Dashboard() {
 
       {/* Modal: Set Budget */}
       {budgetModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Oylik Byudjet Belgilash 🟡</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Oylik Byudjet Belgilash 🟡</h3>
 
             <form onSubmit={handleBudgetSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Oylik Cheklov Summasi ({currencySymbol})</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Oylik Cheklov Summasi ({currencySymbol})</label>
                 <input
                   type="number"
                   placeholder="5000000"
                   value={budgetAmount}
                   onChange={(e) => setBudgetAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1156,14 +1140,14 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setBudgetModalOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
                   disabled={saveBudgetMutation.isPending}
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Saqlash
                 </button>
@@ -1175,31 +1159,31 @@ export default function Dashboard() {
 
       {/* Modal: Create Goal */}
       {goalModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Yangi Jamg'arma Maqsadi 🎯</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Yangi Jamg'arma Maqsadi 🎯</h3>
 
             <form onSubmit={handleCreateGoal} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Maqsad Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Maqsad Nomi</label>
                 <input
                   type="text"
                   placeholder="Masalan: Yangi Telefon 📱"
                   value={goalTitle}
                   onChange={(e) => setGoalTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Maqsad Summasi ({currencySymbol})</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Maqsad Summasi ({currencySymbol})</label>
                 <input
                   type="number"
                   placeholder="10000000"
                   value={goalTarget}
                   onChange={(e) => setGoalTarget(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1208,13 +1192,13 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setGoalModalOpen(false)}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Yaratish
                 </button>
@@ -1226,29 +1210,29 @@ export default function Dashboard() {
 
       {/* Modal: Edit Goal */}
       {editGoalModalOpen && editingGoal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">Maqsadni Tahrirlash ✏️</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">Maqsadni Tahrirlash ✏️</h3>
 
             <form onSubmit={handleUpdateGoal} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Maqsad Nomi</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Maqsad Nomi</label>
                 <input
                   type="text"
                   value={goalTitle}
                   onChange={(e) => setGoalTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Maqsad Summasi ({currencySymbol})</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Maqsad Summasi ({currencySymbol})</label>
                 <input
                   type="number"
                   value={goalTarget}
                   onChange={(e) => setGoalTarget(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1257,13 +1241,13 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => { setEditGoalModalOpen(false); setEditingGoal(null); }}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Yangilash
                 </button>
@@ -1275,19 +1259,19 @@ export default function Dashboard() {
 
       {/* Modal: Deposit to Goal */}
       {depositModalOpen && selectedGoal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
-            <h3 className="text-lg font-black text-white">"{selectedGoal.title}" ga Pul Ajratish 💰</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#16161E] border border-amber-500/30 w-full max-w-md p-6 rounded-2xl shadow-2xl space-y-6">
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">"{selectedGoal.title}" ga Pul Ajratish 💰</h3>
 
             <form onSubmit={handleDepositToGoal} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-[#FCD34D] uppercase">Ajratilayotgan Summa ({currencySymbol})</label>
+                <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase">Ajratilayotgan Summa ({currencySymbol})</label>
                 <input
                   type="number"
                   placeholder="500000"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}
-                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:border-[#F59E0B]"
+                  className="w-full px-4 py-2.5 mt-1 rounded-xl border border-amber-500/30 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#F59E0B]"
                   required
                 />
               </div>
@@ -1296,13 +1280,13 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => { setDepositModalOpen(false); setSelectedGoal(null); }}
-                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-300 text-sm font-semibold rounded-xl hover:bg-white/5"
+                  className="flex-1 py-2.5 border border-amber-500/20 text-slate-600 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-100 dark:hover:bg-white/5"
                 >
                   Bekor qilish
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 gold-gradient text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
+                  className="flex-1 py-2.5 gold-gradient text-white dark:text-[#0B0B0E] text-sm font-extrabold rounded-xl shadow transition-colors"
                 >
                   Qo'shish
                 </button>

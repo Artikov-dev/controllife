@@ -64,12 +64,12 @@ export default function Register() {
   };
 
   return (
-    <div className="space-y-6 bg-[#16161E] p-8 rounded-2xl border border-amber-500/20 shadow-2xl">
+    <div className="space-y-6 bg-white dark:bg-[#16161E] p-8 rounded-2xl border border-amber-500/20 shadow-xl dark:shadow-2xl">
       <div className="space-y-2">
-        <h2 className="text-3xl font-black tracking-tight font-display text-white">
+        <h2 className="text-3xl font-black tracking-tight font-display text-slate-900 dark:text-white">
           Ro'yxatdan o'tish 🟡
         </h2>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Moliyangizni nazorat qilishni boshlash uchun hisob yarating
         </p>
       </div>
@@ -77,7 +77,7 @@ export default function Register() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Full Name */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="full_name">
+          <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider" htmlFor="full_name">
             To'liq Ismingiz
           </label>
           <div className="relative">
@@ -89,7 +89,7 @@ export default function Register() {
               type="text"
               placeholder="Ali Valiyev"
               {...register('full_name')}
-              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.full_name
                   ? 'border-rose-500 focus:ring-rose-500/25'
                   : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
@@ -97,13 +97,13 @@ export default function Register() {
             />
           </div>
           {errors.full_name && (
-            <p className="text-xs text-rose-400 mt-1">{errors.full_name.message}</p>
+            <p className="text-xs text-rose-500 dark:text-rose-400 mt-1">{errors.full_name.message}</p>
           )}
         </div>
 
         {/* Email */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="email">
+          <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider" htmlFor="email">
             Email Manzili
           </label>
           <div className="relative">
@@ -115,7 +115,7 @@ export default function Register() {
               type="email"
               placeholder="example@finance.com"
               {...register('email')}
-              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.email
                   ? 'border-rose-500 focus:ring-rose-500/25'
                   : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
@@ -123,13 +123,13 @@ export default function Register() {
             />
           </div>
           {errors.email && (
-            <p className="text-xs text-rose-400 mt-1">{errors.email.message}</p>
+            <p className="text-xs text-rose-500 dark:text-rose-400 mt-1">{errors.email.message}</p>
           )}
         </div>
 
         {/* Password */}
         <div className="space-y-1.5">
-          <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="password">
+          <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider" htmlFor="password">
             Parol
           </label>
           <div className="relative">
@@ -141,7 +141,7 @@ export default function Register() {
               type="password"
               placeholder="Kamida 6 ta belgi"
               {...register('password')}
-              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                 errors.password
                   ? 'border-rose-500 focus:ring-rose-500/25'
                   : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
@@ -149,14 +149,14 @@ export default function Register() {
             />
           </div>
           {errors.password && (
-            <p className="text-xs text-rose-400 mt-1">{errors.password.message}</p>
+            <p className="text-xs text-rose-500 dark:text-rose-400 mt-1">{errors.password.message}</p>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           {/* Currency */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="currency">
+            <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider" htmlFor="currency">
               Valyuta
             </label>
             <div className="relative">
@@ -166,7 +166,7 @@ export default function Register() {
               <select
                 id="currency"
                 {...register('currency')}
-                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-amber-500/25 bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B] transition-all duration-150"
+                className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-amber-500/25 bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B] transition-all duration-150"
               >
                 <option value="UZS">UZS (so'm)</option>
                 <option value="USD">USD ($)</option>
@@ -178,7 +178,7 @@ export default function Register() {
 
           {/* Avatar URL */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-[#FCD34D] uppercase tracking-wider" htmlFor="avatar">
+            <label className="text-xs font-bold text-[#D97706] dark:text-[#FCD34D] uppercase tracking-wider" htmlFor="avatar">
               Avatar Havolasi
             </label>
             <div className="relative">
@@ -190,7 +190,7 @@ export default function Register() {
                 type="text"
                 placeholder="https://..."
                 {...register('avatar')}
-                className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-[#0B0B0E] text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
+                className={`w-full pl-11 pr-4 py-2.5 rounded-xl border bg-slate-50 dark:bg-[#0B0B0E] text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 transition-all duration-150 ${
                   errors.avatar
                     ? 'border-rose-500 focus:ring-rose-500/25'
                     : 'border-amber-500/25 focus:ring-[#F59E0B]/30 focus:border-[#F59E0B]'
@@ -198,7 +198,7 @@ export default function Register() {
               />
             </div>
             {errors.avatar && (
-              <p className="text-xs text-rose-400 mt-1">{errors.avatar.message}</p>
+              <p className="text-xs text-rose-500 dark:text-rose-400 mt-1">{errors.avatar.message}</p>
             )}
           </div>
         </div>
@@ -207,7 +207,7 @@ export default function Register() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-black text-[#0B0B0E] gold-gradient hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F59E0B] transition-all duration-200 shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-black text-white dark:text-[#0B0B0E] gold-gradient hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F59E0B] transition-all duration-200 shadow-md shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>
@@ -221,11 +221,11 @@ export default function Register() {
       </form>
 
       <div className="text-center pt-1">
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Hisobingiz bormi?{' '}
           <Link
             to="/auth/login"
-            className="font-bold text-[#FCD34D] hover:text-[#F59E0B] underline"
+            className="font-bold text-[#D97706] dark:text-[#FCD34D] hover:underline"
           >
             Kirish
           </Link>
