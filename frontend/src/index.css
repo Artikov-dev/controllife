@@ -175,3 +175,44 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(251, 191, 36, 0.65);
 }
+
+/* Media Print Rules for Professional PDF Report */
+@media print {
+  aside,
+  header,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+
+  .md\:pl-64 {
+    padding-left: 0 !important;
+  }
+
+  div, p, h1, h2, h3, h4, span, td, th {
+    color: #111111 !important;
+    text-shadow: none !important;
+  }
+
+  .bg-\[\#16161E\], .bg-\[\#0B0B0E\] {
+    background-color: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  .border-amber-500\/20, .border-amber-500\/15, .border-amber-500\/30 {
+    border-color: #e2e8f0 !important;
+  }
+
+  .gold-gradient, .gold-gradient-text {
+    background: none !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+}

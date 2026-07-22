@@ -26,6 +26,7 @@ import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
+  Print as PrintIcon,
 } from '@mui/icons-material';
 
 import { 
@@ -471,15 +472,23 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <button
+            onClick={() => window.print()}
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-[#0B0B0E] text-[#FCD34D] text-sm font-bold hover:bg-white/5 transition-colors no-print"
+            title="PDF hisoboti sifatida saqlash va chop etish"
+          >
+            <PrintIcon style={{ fontSize: 20 }} />
+            PDF Hisobot
+          </button>
+          <button
             onClick={() => setBudgetModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-[#0B0B0E] text-slate-200 text-sm font-bold hover:bg-white/5 transition-colors"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-amber-500/20 bg-[#0B0B0E] text-slate-200 text-sm font-bold hover:bg-white/5 transition-colors no-print"
           >
             <SavingsIcon style={{ fontSize: 20 }} className="text-[#FCD34D]" />
             Byudjet
           </button>
           <button
             onClick={() => setTxModalOpen(true)}
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gold-gradient text-[#0B0B0E] text-sm font-extrabold shadow-lg shadow-amber-500/20 transition-all"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl gold-gradient text-[#0B0B0E] text-sm font-extrabold shadow-lg shadow-amber-500/20 transition-all no-print"
           >
             <AddCircleIcon style={{ fontSize: 20 }} />
             Tranzaksiya qo'shish
