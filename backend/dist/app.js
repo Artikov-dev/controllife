@@ -21,12 +21,12 @@ app.use((0, helmet_1.default)({
     contentSecurityPolicy: false,
 }));
 app.use((0, cors_1.default)({
-    origin: '*', // Allows access from any frontend origin for ease of local development
+    origin: true, // Dynamically reflects request origin (supports Vercel, localhost, etc.)
     credentials: true,
 }));
 app.use(express_1.default.json());
-// Swagger API Documentation UI
-app.use('/api-docs', swagger_1.swaggerUi.serve, swagger_1.swaggerUi.setup(swagger_1.swaggerSpec));
+// Swagger API Documentation UI (Gold & Black Theme)
+app.use('/api-docs', swagger_1.swaggerUi.serve, swagger_1.swaggerUi.setup(swagger_1.swaggerSpec, swagger_1.swaggerUiOptions));
 // General rate limiter to prevent DOS
 const apiLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000, // 15 minutes

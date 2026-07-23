@@ -21,7 +21,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: '*', // Allows access from any frontend origin for ease of local development
+    origin: true, // Dynamically reflects request origin (supports Vercel, localhost, etc.)
     credentials: true,
   })
 );

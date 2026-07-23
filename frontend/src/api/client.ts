@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/useAuthStore';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
 export const apiClient = axios.create({
-  baseURL: '', // Using the Vite proxy configuration
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -74,7 +76,7 @@ apiClient.interceptors.response.use(
         }
 
         // Call token refresh endpoint
-        const res = await axios.post('/api/auth/refresh', { refreshToken });
+        const res = await axios.post(`${API_BASE_URL}/api/auth/refresh`, { refreshToken });
         const { accessToken, refreshToken: newRefreshToken } = res.data.data;
 
         // Update tokens in store
