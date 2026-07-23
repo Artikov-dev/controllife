@@ -244,12 +244,19 @@ export class TransactionRepository {
       [userId]
     );
 
-    return res.rows.map(row => ({
-      categoryName: row.category_name,
-      amount: parseFloat(row.amount),
-      color: row.category_color || '#cccccc',
-      type: row.type,
-    }));
+    return res.rows.map(row => {
+      const val = parseFloat(row.amount) || 0;
+      return {
+        categoryName: row.category_name,
+        category_name: row.category_name,
+        name: row.category_name,
+        amount: val,
+        total: val,
+        total_amount: val,
+        color: row.category_color || '#f59e0b',
+        type: row.type,
+      };
+    });
   }
 
   static async getMonthlyTrend(userId: number, limit: number = 6): Promise<{ month: string; income: number; expense: number }[]> {

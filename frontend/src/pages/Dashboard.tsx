@@ -766,54 +766,71 @@ export default function Dashboard() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Trend Area Chart */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 space-y-6 shadow-sm">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-slate-900 dark:bg-slate-950 border border-slate-800 space-y-6 shadow-xl relative overflow-hidden">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Oylik Dinamika (Daromad va Xarajatlar)</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Oxirgi oylar bo'yicha tahlil</p>
+              <h3 className="font-bold text-[#F59E0B] dark:text-[#FCD34D] text-base">Oylik Dinamika (Daromad va Xarajatlar)</h3>
+              <p className="text-xs text-slate-400">Oxirgi oylar bo'yicha tahlil</p>
             </div>
-            <ShowChartIcon style={{ fontSize: 24 }} className="text-[#D97706] dark:text-[#FCD34D]" />
+            <div className="p-2 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+              <ShowChartIcon style={{ fontSize: 22 }} />
+            </div>
           </div>
 
           <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={trend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                  </linearGradient>
-                  <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.5}/>
-                    <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#ffffff', 
-                    borderColor: 'rgba(245, 158, 11, 0.3)',
-                    borderRadius: '12px',
-                    color: '#0f172a'
-                  }} 
-                />
-                <Area type="monotone" dataKey="income" name="Daromad" stroke="#10B981" strokeWidth={2.5} fillOpacity={1} fill="url(#incomeGrad)" />
-                <Area type="monotone" dataKey="expense" name="Xarajat" stroke="#F59E0B" strokeWidth={2.5} fillOpacity={1} fill="url(#expenseGrad)" />
-              </AreaChart>
-            </ResponsiveContainer>
+            {trend && trend.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={trend} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#EF4444" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#EF4444" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
+                  <YAxis 
+                    stroke="#94a3b8" 
+                    fontSize={12} 
+                    tickLine={false} 
+                    tickFormatter={(val) => val >= 1000000 ? `${(val/1000000).toFixed(1)}M` : val >= 1000 ? `${(val/1000).toFixed(0)}k` : val}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#0f172a', 
+                      borderColor: '#334155',
+                      borderRadius: '12px',
+                      color: '#f8fafc',
+                      fontSize: '12px'
+                    }} 
+                    formatter={(val: any) => [formatCurrency(val), '']}
+                  />
+                  <Area type="monotone" dataKey="income" name="Daromad" stroke="#10B981" strokeWidth={2.5} fillOpacity={1} fill="url(#incomeGrad)" />
+                  <Area type="monotone" dataKey="expense" name="Xarajat" stroke="#EF4444" strokeWidth={2.5} fillOpacity={1} fill="url(#expenseGrad)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex items-center justify-center text-slate-500 text-sm">
+                Dinamika ma'lumotlari mavjud emas
+              </div>
+            )}
           </div>
         </div>
 
         {/* Category Distribution Pie Chart */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-[#16161E] border border-amber-500/20 flex flex-col justify-between space-y-4 shadow-sm">
+        <div className="p-6 rounded-2xl bg-slate-900 dark:bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-4 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-[#D97706] dark:text-[#FCD34D]">Kategoriyalar Ulushi</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Xarajatlar strukturasi</p>
+              <h3 className="font-bold text-[#F59E0B] dark:text-[#FCD34D] text-base">Kategoriyalar Ulushi</h3>
+              <p className="text-xs text-slate-400">Xarajatlar strukturasi</p>
             </div>
-            <DonutSmallIcon style={{ fontSize: 24 }} className="text-[#D97706] dark:text-[#FCD34D]" />
+            <div className="p-2 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+              <DonutSmallIcon style={{ fontSize: 22 }} />
+            </div>
           </div>
 
           {catDist && catDist.length > 0 ? (
@@ -827,42 +844,49 @@ export default function Dashboard() {
                     innerRadius={55}
                     outerRadius={80}
                     paddingAngle={4}
-                    dataKey="total"
-                    nameKey="category_name"
+                    dataKey="amount"
+                    nameKey="categoryName"
                   >
-                    {catDist.map((_: any, index: number) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="#ffffff" strokeWidth={2} />
+                    {catDist.map((item: any, index: number) => (
+                      <Cell key={`cell-${index}`} fill={item.color || COLORS[index % COLORS.length]} stroke="#0f172a" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip 
                     contentStyle={{ 
-                      backgroundColor: '#ffffff', 
-                      borderColor: 'rgba(245, 158, 11, 0.3)',
-                      borderRadius: '10px',
-                      color: '#0f172a'
+                      backgroundColor: '#0f172a', 
+                      borderColor: '#334155',
+                      borderRadius: '12px',
+                      color: '#f8fafc',
+                      fontSize: '12px'
                     }}
+                    formatter={(val: any) => [formatCurrency(val), 'Summa']}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-400">
-              <FolderOpenIcon style={{ fontSize: 40 }} className="mb-2 text-slate-400" />
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 text-slate-500">
+              <FolderOpenIcon style={{ fontSize: 40 }} className="mb-2 text-slate-500" />
               <p className="text-xs">Ushbu oy uchun xarajatlar yo'q</p>
             </div>
           )}
 
           {/* Legend list */}
-          <div className="space-y-1.5 pt-2 border-t border-amber-500/20 max-h-36 overflow-y-auto">
-            {catDist.map((item: any, idx: number) => (
-              <div key={idx} className="flex items-center justify-between text-xs">
-                <div className="flex items-center space-x-2">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                  <span className="text-slate-700 dark:text-slate-300 font-medium">{item.category_name}</span>
+          <div className="space-y-2 pt-3 border-t border-slate-800 max-h-36 overflow-y-auto pr-1">
+            {(catDist || []).map((item: any, idx: number) => {
+              const name = item.categoryName || item.category_name || item.name || 'Umumiy';
+              const amt = item.amount ?? item.total ?? item.total_amount ?? 0;
+              const color = item.color || COLORS[idx % COLORS.length];
+              return (
+                <div key={idx} className="flex items-center justify-between text-xs py-0.5">
+                  <div className="flex items-center space-x-2">
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} />
+                    <span className="text-slate-300 font-medium">{name}</span>
+                  </div>
+                  <span className="font-bold text-slate-100 font-mono">{formatCurrency(amt)}</span>
                 </div>
-                <span className="font-bold text-slate-900 dark:text-white">{formatCurrency(item.total)}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
