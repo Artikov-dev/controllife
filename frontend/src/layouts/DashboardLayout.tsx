@@ -19,8 +19,10 @@ import {
   Settings as SettingsIcon,
   Person as PersonIcon,
   Add as AddIcon,
+  Share as ShareIcon,
 } from '@mui/icons-material';
 import { toast } from 'sonner';
+import ShareModal from '../components/ShareModal';
 
 export default function DashboardLayout() {
   const { user, logout, theme, toggleTheme, setAuth, accessToken, refreshToken } = useAuthStore();
@@ -31,6 +33,7 @@ export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [quickTxModalOpen, setQuickTxModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   // Form states for profile edit
   const [fullName, setFullName] = useState(user?.full_name || '');
@@ -325,6 +328,16 @@ export default function DashboardLayout() {
               {theme === 'dark' ? <SunIcon style={{ fontSize: 20 }} /> : <MoonIcon style={{ fontSize: 20 }} />}
             </button>
 
+            {/* Public Share Button */}
+            <button
+              onClick={() => setShareModalOpen(true)}
+              className="px-3 py-1.5 rounded-xl text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition-all duration-150 flex items-center space-x-1.5 text-xs font-bold"
+              title="Uydagilar uchun ommaviy havola"
+            >
+              <ShareIcon style={{ fontSize: 18 }} />
+              <span className="hidden md:inline">Uydagilar uchun link</span>
+            </button>
+
             <div className="h-6 w-px bg-amber-500/20 dark:bg-amber-500/15 hidden sm:block" />
 
             {/* Profile trigger */}
@@ -590,6 +603,9 @@ export default function DashboardLayout() {
           </div>
         </div>
       )}
+
+      {/* Share Modal for Public Shared Link */}
+      <ShareModal isOpen={shareModalOpen} onClose={() => setShareModalOpen(false)} />
     </div>
   );
 }

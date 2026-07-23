@@ -9,6 +9,7 @@ import Transactions from './pages/Transactions';
 import Categories from './pages/Categories';
 import AdminDashboard from './pages/AdminDashboard';
 import Recurring from './pages/Recurring';
+import SharedDashboard from './pages/SharedDashboard';
 import { Toaster } from 'sonner';
 
 // Protected Route Component
@@ -47,6 +48,8 @@ export default function App() {
       
       <Routes>
         {/* Public Routes */}
+        <Route path="/shared/:token" element={<SharedDashboard />} />
+        
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

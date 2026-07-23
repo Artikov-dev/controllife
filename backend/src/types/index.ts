@@ -7,6 +7,8 @@ export interface User {
   avatar: string | null;
   currency: string;
   is_blocked: boolean;
+  share_token?: string | null;
+  is_share_enabled?: boolean;
   created_at: Date;
   updated_at: Date;
 }

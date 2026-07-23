@@ -8,6 +8,7 @@ import transactionRoutes from './routes/transaction.routes';
 import budgetRoutes from './routes/budget.routes';
 import adminRoutes from './routes/admin.routes';
 import recurringRoutes from './routes/recurring.routes';
+import publicRoutes from './routes/public.routes';
 import { errorHandler } from './middlewares/errorHandler';
 import { swaggerUi, swaggerSpec, swaggerUiOptions } from './config/swagger';
 
@@ -58,6 +59,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/recurring', recurringRoutes);
+app.use('/api/public', publicRoutes);
 
 // Error Handling
 app.use(errorHandler);

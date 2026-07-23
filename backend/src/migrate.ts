@@ -33,6 +33,14 @@ async function runMigration() {
       ADD COLUMN IF NOT EXISTS is_blocked BOOLEAN DEFAULT false
     `);
 
+    // 3. Add "share_token" and "is_share_enabled" columns to users
+    console.log('Adding "share_token" and "is_share_enabled" columns to users table...');
+    await client.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS share_token VARCHAR(64) UNIQUE,
+      ADD COLUMN IF NOT EXISTS is_share_enabled BOOLEAN DEFAULT false
+    `);
+
     console.log('Migrations applied successfully!');
     
     client.release();

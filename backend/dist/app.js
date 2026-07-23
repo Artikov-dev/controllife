@@ -13,6 +13,7 @@ const transaction_routes_1 = __importDefault(require("./routes/transaction.route
 const budget_routes_1 = __importDefault(require("./routes/budget.routes"));
 const admin_routes_1 = __importDefault(require("./routes/admin.routes"));
 const recurring_routes_1 = __importDefault(require("./routes/recurring.routes"));
+const public_routes_1 = __importDefault(require("./routes/public.routes"));
 const errorHandler_1 = require("./middlewares/errorHandler");
 const swagger_1 = require("./config/swagger");
 const app = (0, express_1.default)();
@@ -50,6 +51,7 @@ app.use('/api/transactions', transaction_routes_1.default);
 app.use('/api/budgets', budget_routes_1.default);
 app.use('/api/admin', admin_routes_1.default);
 app.use('/api/recurring', recurring_routes_1.default);
+app.use('/api/public', public_routes_1.default);
 // Error Handling
 app.use(errorHandler_1.errorHandler);
 exports.default = app;

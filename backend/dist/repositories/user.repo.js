@@ -11,6 +11,17 @@ class UserRepository {
         const res = await (0, db_1.query)('SELECT * FROM users WHERE id = $1', [id]);
         return res.rowCount && res.rowCount > 0 ? res.rows[0] : null;
     }
+    static async findByShareToken(shareToken) {
+        const res = await (0, db_1.query)('SELECT * FROM users WHERE share_token = $1 AND is_share_enabled = true', [shareToken]);
+        return res.rowCount && res.rowCount > 0 ? res.rows[0] : null;
+    }
+    static async updateShareToken(id, shareToken, isShareEnabled) {
+        const res = await (0, db_1.query)(`UPDATE users
+       SET share_token = $1, is_share_enabled = $2, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $3
+       RETURNING *`, [shareToken, isShareEnabled, id]);
+        return res.rowCount && res.rowCount > 0 ? res.rows[0] : null;
+    }
     static async create(user) {
         const res = await (0, db_1.query)(`INSERT INTO users (full_name, email, password, role, avatar, currency)
        VALUES ($1, $2, $3, $4, $5, $6)
