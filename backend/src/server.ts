@@ -10,6 +10,16 @@ const startServer = async () => {
     console.log('Connecting to PostgreSQL database...');
     const client = await pool.connect();
     console.log('Connected to PostgreSQL database successfully!');
+    
+    // Auto-migrate users table for required columns
+    await client.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user',
+      ADD COLUMN IF NOT EXISTS is_blocked BOOLEAN DEFAULT false,
+      ADD COLUMN IF NOT EXISTS share_token VARCHAR(64) UNIQUE,
+      ADD COLUMN IF NOT EXISTS is_share_enabled BOOLEAN DEFAULT false
+    `);
+    console.log('Auto-migrations verified on database startup!');
     client.release();
 
     const server = app.listen(PORT, () => {

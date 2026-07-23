@@ -36,7 +36,8 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
       setShareToken(res.data.data.share_token);
       setIsShareEnabled(res.data.data.is_share_enabled);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Havola holatini yuklashda xatolik');
+      console.error('fetchShareStatus error:', err);
+      // Quiet fail if not yet initialized
     } finally {
       setLoading(false);
     }
@@ -50,7 +51,9 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
       setIsShareEnabled(true);
       toast.success('Ommaviy havola muvaffaqiyatli yaratildi!');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Havola yaratishda xatolik');
+      console.error('handleGenerate error:', err);
+      const errMsg = err.response?.data?.message || err.message || 'Server bilan bog\'lanishda xatolik';
+      toast.error(`Havola yaratib bo'lmadi: ${errMsg}`);
     } finally {
       setActionLoading(false);
     }
@@ -64,7 +67,9 @@ export default function ShareModal({ isOpen, onClose }: ShareModalProps) {
       setIsShareEnabled(false);
       toast.info('Ommaviy havola bekor qilindi (o\'chirildi)');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Havolani o\'chirishda xatolik');
+      console.error('handleRevoke error:', err);
+      const errMsg = err.response?.data?.message || err.message || 'Server bilan bog\'lanishda xatolik';
+      toast.error(`Havolani o'chirishda xatolik: ${errMsg}`);
     } finally {
       setActionLoading(false);
     }
